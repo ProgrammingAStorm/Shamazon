@@ -1,5 +1,7 @@
-namespace Shamazon {
-    public class Product {
-        
+namespace Shamazon.Models
+{
+    public class Product
+    {
+
     }
 }

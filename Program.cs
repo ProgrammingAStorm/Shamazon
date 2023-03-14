@@ -1,6 +1,15 @@
+using Shamazon.Models;
+using Shamazon.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<ShamazonDatabaseSettings>(
+    builder.Configuration.GetSection("ShamazonDatabase"));
+
+builder.Services.AddSingleton<ShoppersService>();
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -15,7 +24,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.MapGet("/api/test", () => new {Hello = "word!"});
+app.MapControllers();
+app.MapGet("/api/test", (IEnumerable<EndpointDataSource> endpointSources) => new { message = string.Join("\n", endpointSources.SelectMany(source => source.Endpoints)) });
 
 app.MapFallbackToFile("index.html");
 
