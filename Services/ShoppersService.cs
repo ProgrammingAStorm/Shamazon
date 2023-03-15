@@ -27,6 +27,11 @@ namespace Shamazon.Services
         public async Task<Shopper?> GetAsync(string id) =>
             await _shoppersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
+        public async Task<Shopper?> GetByEmailAsync(string email)
+        {
+            return await _shoppersCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
+        }
+
         public async Task CreateAsync(Shopper newShopper) =>
             await _shoppersCollection.InsertOneAsync(newShopper);
 
@@ -35,5 +40,12 @@ namespace Shamazon.Services
 
         public async Task RemoveAsync(string id) =>
             await _shoppersCollection.DeleteOneAsync(x => x.Id == id);
+
+        public async Task<Boolean> IsEmailInUse(string email)
+        {
+            var shopper = await GetByEmailAsync(email);
+
+            return shopper == null ? false : true;
+        }
     }
 }

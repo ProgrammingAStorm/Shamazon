@@ -13,15 +13,17 @@ namespace Shamazon.Models
 
         public string Password { get; set; }
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
 
-        public string[] Interests { get; set; }
+        public string LastName { get; set; }
 
-        public Review[] Reviews { get; set; }
+        public string[]? Interests { get; set; }
 
-        public Order[] Orders { get; set; }
+        public Review[]? Reviews { get; set; }
 
-        public Product[] Cart { get; set; }
+        public Order[]? Orders { get; set; }
+
+        public Product[]? Cart { get; set; }
     }
 }
 

@@ -33,6 +33,9 @@ public class ShoppersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(Shopper newShopper)
     {
+        if (await _shoppersService.IsEmailInUse(newShopper.Email)!)
+            return StatusCode(409, new { message = "Email is already in use." });
+
         await _shoppersService.CreateAsync(newShopper);
 
         return CreatedAtAction(nameof(Get), new { id = newShopper.Id }, newShopper);
