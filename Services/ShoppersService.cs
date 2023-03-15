@@ -21,6 +21,8 @@ namespace Shamazon.Services
                 ShamazonDatabaseSettings.Value.ShoppersCollectionName);
         }
 
+        // Get rid of this function at some point since you don't really
+        // ever need to get all shoppers.
         public async Task<List<Shopper>> GetAsync() =>
         await _shoppersCollection.Find(_ => true).ToListAsync();
 
