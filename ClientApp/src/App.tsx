@@ -1,7 +1,4 @@
-import { useEffect, useRef } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
-
-import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
   return <Routes >
@@ -24,37 +21,9 @@ function Layout() {
 }
 
 function Header() {
-  const {
-    user,
-    isAuthenticated,
-    loginWithPopup,
-    logout,
-  } = useAuth0();
-
-  const mode = useRef('')
-
-  useEffect(() => {
-    console.log("From header", user)
-
-    if (isAuthenticated) {
-      switch (mode.current) {
-
-      }
-    }
-  }, [user])
 
   return <header>
     <h1>Shamazon</h1>
-
-    {!isAuthenticated ? <button onClick={async () => {
-      await loginWithPopup({})
-    }}>
-      Log In
-    </button> : <button onClick={() => logout({})}>
-      Logout
-    </button>}
-
-
   </header>;
 }
 
@@ -83,23 +52,3 @@ function NoMatch() {
 }
 
 export default App
-
-{/* <div>Shamazon</div>
-      
-      <button onClick={async () => {
-        const request = await fetch('/api/test')
-        const response = await request.json()
-
-        console.log(response.message)
-      }}>
-        Press to get list of routes.
-      </button>
-      
-      <button onClick={async () => {
-        const request = await fetch('/api/shoppers')
-        const response = await request.json()
-
-        console.log(response)
-      }}>
-        Press to get all shoppers.
-      </button> */}
