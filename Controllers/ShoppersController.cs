@@ -1,5 +1,7 @@
 using Shamazon.Models;
 using Shamazon.Services;
+using Shamazon.Helpers;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Shamazon.Controllers;
@@ -36,6 +38,8 @@ public class ShoppersController : ControllerBase
         if (await _shoppersService.IsEmailInUse(newShopper.Email)!)
             return StatusCode(409, new { message = "Email is already in use." });
 
+        newShopper.Password = Hash.HashPassword(newShopper.Password);
+        
         await _shoppersService.CreateAsync(newShopper);
 
         return CreatedAtAction(nameof(Get), new { id = newShopper.Id }, newShopper);
