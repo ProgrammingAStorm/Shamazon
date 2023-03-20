@@ -1,5 +1,10 @@
 import { Routes, Route, Outlet } from "react-router-dom";
 
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import Footer from "./components/Footer";
+import NoMatch from "./components/NoMatch";
+
 function App() {
   return <Routes >
     <Route path="/" element={<Layout />}>
@@ -18,37 +23,6 @@ function Layout() {
 
     <Footer />
   </>;
-}
-
-function Header() {
-
-  return <header>
-    <h1>Shamazon</h1>
-  </header>;
-}
-
-function Home() {
-  return <main>
-    home
-  </main>
-}
-
-function Footer() {
-  return <footer>Made by mark</footer>;
-}
-
-function NoMatch() {
-  return <main>
-    <h1>No Match!</h1>
-
-    <p>
-      Something went wrong and the page you navigated to doesn't exist!
-    </p>
-
-    <h4>
-      Sorry! {';('}
-    </h4>
-  </main>
 }
 
 export default App

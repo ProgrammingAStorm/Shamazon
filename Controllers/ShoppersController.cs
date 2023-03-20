@@ -35,11 +35,9 @@ public class ShoppersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(Shopper newShopper)
     {
-        if (await _shoppersService.IsEmailInUse(newShopper.Email)!)
-            return StatusCode(409, new { message = "Email is already in use." });
+        if (await _shoppersService.IsEmailInUse(newShopper.Email)!) return StatusCode(409, new { message = "Email is already in use." });
 
         newShopper.Password = Hash.HashPassword(newShopper.Password);
-        
         await _shoppersService.CreateAsync(newShopper);
 
         return CreatedAtAction(nameof(Get), new { id = newShopper.Id }, newShopper);
