@@ -35,6 +35,10 @@ public class ShoppersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(Shopper newShopper)
     {
+        // TODO validate email on this side too
+        // TODO validate password on this side too
+        bool todo;
+
         if (await _shoppersService.IsEmailInUse(newShopper.Email)!) return StatusCode(409, new { message = "Email is already in use." });
 
         newShopper.Password = Hash.HashPassword(newShopper.Password);

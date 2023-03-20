@@ -1,36 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Header() {
+    const navigate = useNavigate()
 
     return <header>
-        <h1>Shamazon</h1>
+        <h1 onClick={() => navigate("/")}>Shamazon</h1>
 
-        <button onClick={async () => {
-            const request = await fetch('/api/shoppers', {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json; charset=utf-8"
-                },
-                body: JSON.stringify({
-                    "FirstName": "Mark",
-                    "LastName": "Pavel",
-                    "Email": "markpavel02@gmail.com",
-                    "Password": "Password",
-                })
-            });
-            const response = await request.json()
-
-            switch (request.status) {
-                case 409:
-                    console.log(response.message);
-                    break;
-
-                case 201:
-                    console.log(response)
-                    break;
-
-                default:
-                    console.log(response)
-            }
-        }}>
+        <button onClick={() => navigate("/login")}>
             Log in
         </button>
     </header>;
