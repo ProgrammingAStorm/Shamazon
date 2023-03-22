@@ -33,16 +33,16 @@ export default function LogIn() {
         event.preventDefault()
 
         if (!validateEmail(email)) {
-            setMessage("Email is not valid.");
+            return setMessage("Email is not valid.");
         }
 
         if (!validatePassword(password)) {
-            setMessage("Password is not valid.");
+            return setMessage("Password is not valid.");
         }
 
         clearForm();
 
-        const request = await fetch('/api/shoppers', {
+        const request = await fetch('/api/shoppers/signup', {
             method: "POST",
             headers: {
                 "content-type": "application/json; charset=utf-8"
@@ -54,14 +54,15 @@ export default function LogIn() {
                 "Password": password,
             })
         });
-        const response = await request.json()
+        const response = await request.json();
+        console.log("status", request.status)
 
         switch (request.status) {
             case 409:
                 console.log(response.message);
                 break;
 
-            case 201:
+            case 202:
                 console.log(response)
                 break;
 
@@ -87,5 +88,3 @@ export default function LogIn() {
         setPassword('')
     }
 }
-
-

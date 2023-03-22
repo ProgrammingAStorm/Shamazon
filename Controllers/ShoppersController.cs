@@ -11,13 +11,14 @@ namespace Shamazon.Controllers;
 public class ShoppersController : ControllerBase
 {
     private readonly ShoppersService _shoppersService;
+    private readonly ShopperTokenService _shopperTokenService;
 
-    public ShoppersController(ShoppersService shoppersService) =>
+    public ShoppersController(ShoppersService shoppersService, ShopperTokenService shopperTokenService)
+    {
         _shoppersService = shoppersService;
+        _shopperTokenService = shopperTokenService;
+    }
 
-    [HttpGet]
-    public async Task<List<Shopper>> Get() =>
-        await _shoppersService.GetAsync();
 
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<Shopper>> Get(string id)
@@ -32,8 +33,14 @@ public class ShoppersController : ControllerBase
         return shopper;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Post(Shopper newShopper)
+    [HttpGet("login")]
+    public async Task<ActionResult<Shopper>> Login()
+    {
+        return new Shopper();
+    }
+
+    [HttpPost("signup")]
+    public async Task<IActionResult> Signup(Shopper newShopper)
     {
         // TODO validate email on this side too
         // TODO validate password on this side too
@@ -44,7 +51,11 @@ public class ShoppersController : ControllerBase
         newShopper.Password = Hash.HashPassword(newShopper.Password);
         await _shoppersService.CreateAsync(newShopper);
 
-        return CreatedAtAction(nameof(Get), new { id = newShopper.Id }, newShopper);
+        Shopper? shopper = await _shoppersService.GetAsync(newShopper.Id!);
+
+        var jwt = _shopperTokenService.CreateShopperToken(shopper!);
+
+        return StatusCode(202, new {Token = jwt});
     }
 
     [HttpPut("{id:length(24)}")]
