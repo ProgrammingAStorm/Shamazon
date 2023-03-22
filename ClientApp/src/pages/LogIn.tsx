@@ -1,5 +1,9 @@
-import { FormEvent, useState } from "react"
-import { useNavigate } from "react-router-dom";
+// React imports
+import { FormEvent, useState, useContext, useEffect } from "react"
+import { Link, useNavigate } from "react-router-dom";
+
+//Util imports
+import { UserContext } from "../utils/context";
 
 export default function LogIn() {
     const [email, setEmail] = useState('');
@@ -8,28 +12,38 @@ export default function LogIn() {
 
     const navigate = useNavigate();
 
-    return <form onSubmit={event => handleLogin(event)}>
-        <input
-            type="email"
-            placeholder="Email"
-            className="border-cyan-900 border m-1"
-            value={email}
-            required
-            onChange={event => setEmail(event.target.value)}
-        ></input>
-        <input
-            type="password"
-            placeholder="Password"
-            className="border-cyan-900 border m-1"
-            value={password}
-            required
-            onChange={event => setPassword(event.target.value)}
-        ></input>
+    const [user, setUser] = useContext(UserContext);
 
-        <button type="submit" className="border-cyan-900 border m-1 p-1">Submit</button>
+    useEffect(() => {
+        if (user.token !== '') navigate('/')
+    }, [])
 
-        {message === '' ? <p>No Message</p> : <p>{message}</p>}
-    </form>
+    return <>
+        <form onSubmit={event => handleLogin(event)}>
+            <input
+                type="email"
+                placeholder="Email"
+                className="border-cyan-900 border m-1"
+                value={email}
+                required
+                onChange={event => setEmail(event.target.value)}
+            ></input>
+            <input
+                type="password"
+                placeholder="Password"
+                className="border-cyan-900 border m-1"
+                value={password}
+                required
+                onChange={event => setPassword(event.target.value)}
+            ></input>
+
+            <button type="submit" className="border-cyan-900 border m-1 p-1">Submit</button>
+
+            {message != '' ? <p>{message}</p> : <p></p> }
+        </form>
+
+        <Link to="/signup">Create account?</Link>
+    </>
 
     async function handleLogin(event: FormEvent) {
         event.preventDefault()
@@ -46,35 +60,26 @@ export default function LogIn() {
 
         clearForm();
 
-        const request = await fetch('/api/shoppers/signup', {
-            method: "POST",
-            headers: {
-                "content-type": "application/json; charset=utf-8"
-            },
-            body: JSON.stringify({
-                "FirstName": "Mark",
-                "LastName": "Pavel",
-                "Email": email,
-                "Password": password,
-            })
+        const request = await fetch(`/api/shoppers/login?email=${email}&password=${password}`, {
+            method: "GET",
         });
         const response = await request.json();
-        console.log("status", request.status)
 
         switch (request.status) {
-            case 409:
+            case 401:
                 setMessage(response.message);
-                break;
 
+                break;
             case 202:
-                console.log(response)
                 localStorage.setItem('token', response.token)
+
+                setUser({token: response.token})
 
                 navigate('/')
 
                 break;
-
             default:
+                console.log("status", request.status)
                 console.log(response)
         }
     }

@@ -1,5 +1,5 @@
 //React imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 
 //Util imports
@@ -13,7 +13,15 @@ import Footer from "./components/Footer";
 import NoMatch from "./components/NoMatch";
 
 function App() {
-  const [user, setUser] = useState({test: "niogga"});
+  const [user, setUser] = useState({token: ''});
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+
+    if(token != '') {
+      setUser({token: token!})
+    }
+  }, [])
 
   return <UserContext.Provider value={[user, setUser]}>
     <Routes >

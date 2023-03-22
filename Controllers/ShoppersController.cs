@@ -1,6 +1,5 @@
 using Shamazon.Models;
 using Shamazon.Services;
-using Shamazon.Helpers;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,28 +33,40 @@ public class ShoppersController : ControllerBase
     }
 
     [HttpGet("login")]
-    public async Task<ActionResult<Shopper>> Login()
+    public async Task<ActionResult<Shopper>> Login(String Email, String Password)
     {
-        return new Shopper();
+        // TODO validate email structure on this side too
+        // TODO validate password structure on this side too
+        bool todo;
+
+        if (await _shoppersService.IsEmailInUse(Email)! == false) return StatusCode(401, new { message = "Email is incorrect." });
+
+        if (await _shoppersService.IsPasswordCorrect(Email, Password)! == false) return StatusCode(401, new { message = "Password is incorrect." });
+
+        var shopper = await _shoppersService.GetByEmailAsync(Email);
+
+        var jwt = _shopperTokenService.CreateShopperToken(shopper!);
+
+        return StatusCode(202, new {token = jwt});
     }
 
     [HttpPost("signup")]
     public async Task<IActionResult> Signup(Shopper newShopper)
     {
-        // TODO validate email on this side too
-        // TODO validate password on this side too
+        // TODO validate email structure on this side too
+        // TODO validate password structure on this side too
         bool todo;
 
         if (await _shoppersService.IsEmailInUse(newShopper.Email)!) return StatusCode(409, new { message = "Email is already in use." });
 
-        newShopper.Password = Hash.HashPassword(newShopper.Password);
+        newShopper.Password = _shoppersService.HashPassword(newShopper.Password);
         await _shoppersService.CreateAsync(newShopper);
 
         Shopper? shopper = await _shoppersService.GetAsync(newShopper.Id!);
 
         var jwt = _shopperTokenService.CreateShopperToken(shopper!);
 
-        return StatusCode(202, new {Token = jwt});
+        return StatusCode(202, new { Token = jwt });
     }
 
     [HttpPut("{id:length(24)}")]

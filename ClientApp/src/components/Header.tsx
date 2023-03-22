@@ -9,12 +9,23 @@ export default function Header() {
     const navigate = useNavigate();
     const [user, setUser] = useContext(UserContext)
 
-
     return <header>
         <h1 onClick={() => navigate("/")}>Shamazon</h1>
 
-        <button onClick={() => navigate("/login")}>
-            Log in
-        </button>
+        {
+            user.token === ''
+                ?
+                <button onClick={() => navigate("/login")}>
+                    Log in
+                </button>
+                :
+                <button onClick={() => {
+                    localStorage.setItem('token', '')
+                    setUser({ token: '' })
+                    navigate('/')
+                }}>
+                    Log out
+                </button>
+        }
     </header>;
 }

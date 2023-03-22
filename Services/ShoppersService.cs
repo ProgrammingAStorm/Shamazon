@@ -1,4 +1,6 @@
 using Shamazon.Models;
+using Shamazon.Helpers;
+
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -48,6 +50,18 @@ namespace Shamazon.Services
             var shopper = await GetByEmailAsync(email);
 
             return shopper == null ? false : true;
+        }
+
+        public async Task<Boolean> IsPasswordCorrect(string email, string password)
+        {
+            Shopper? shopper = await GetByEmailAsync(email);
+
+            return Hash.VerifyHashedPassword(shopper!.Password, password);
+        }
+
+        public string HashPassword(string password)
+        {
+            return Hash.HashPassword(password);
         }
     }
 }
