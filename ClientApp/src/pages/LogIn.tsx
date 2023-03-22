@@ -1,10 +1,12 @@
 import { FormEvent, useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 export default function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
 
-    const [message, setMessage] = useState('')
+    const navigate = useNavigate();
 
     return <form onSubmit={event => handleLogin(event)}>
         <input
@@ -33,10 +35,12 @@ export default function LogIn() {
         event.preventDefault()
 
         if (!validateEmail(email)) {
+            clearForm();
             return setMessage("Email is not valid.");
         }
 
         if (!validatePassword(password)) {
+            clearForm();
             return setMessage("Password is not valid.");
         }
 
@@ -59,11 +63,15 @@ export default function LogIn() {
 
         switch (request.status) {
             case 409:
-                console.log(response.message);
+                setMessage(response.message);
                 break;
 
             case 202:
                 console.log(response)
+                localStorage.setItem('token', response.token)
+
+                navigate('/')
+
                 break;
 
             default:
