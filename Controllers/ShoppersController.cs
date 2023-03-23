@@ -35,13 +35,9 @@ public class ShoppersController : ControllerBase
     [HttpGet("login")]
     public async Task<ActionResult<Shopper>> Login(String Email, String Password)
     {
-        // TODO validate email structure on this side too
-        // TODO validate password structure on this side too
-        bool todo;
+        if (await _shoppersService.IsEmailInUse(Email)! == false) return StatusCode(409, new { message = "Email is incorrect." });
 
-        if (await _shoppersService.IsEmailInUse(Email)! == false) return StatusCode(401, new { message = "Email is incorrect." });
-
-        if (await _shoppersService.IsPasswordCorrect(Email, Password)! == false) return StatusCode(401, new { message = "Password is incorrect." });
+        if (await _shoppersService.IsPasswordCorrect(Email, Password)! == false) return StatusCode(409, new { message = "Password is incorrect." });
 
         var shopper = await _shoppersService.GetByEmailAsync(Email);
 
@@ -53,11 +49,11 @@ public class ShoppersController : ControllerBase
     [HttpPost("signup")]
     public async Task<IActionResult> Signup(Shopper newShopper)
     {
-        // TODO validate email structure on this side too
-        // TODO validate password structure on this side too
-        bool todo;
+        if (!_shoppersService.ValidateEmailFormat(newShopper.Email)) return StatusCode(409, new { message = "Email format is incorrect" });
 
-        if (await _shoppersService.IsEmailInUse(newShopper.Email)!) return StatusCode(409, new { message = "Email is already in use." });
+        if (_shoppersService.ValidatePasswordFormat(newShopper.Password)) return StatusCode(409, new { message = "Password format is incorrect" });
+
+        if (await _shoppersService.IsEmailInUse(newShopper.Email)) return StatusCode(409, new { message = "Email is already in use." });
 
         newShopper.Password = _shoppersService.HashPassword(newShopper.Password);
         await _shoppersService.CreateAsync(newShopper);
