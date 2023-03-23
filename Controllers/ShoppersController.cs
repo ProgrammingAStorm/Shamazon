@@ -1,5 +1,6 @@
 using Shamazon.Models;
 using Shamazon.Services;
+using Shamazon.Helpers;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,8 +18,7 @@ public class ShoppersController : ControllerBase
         _shoppersService = shoppersService;
         _shopperTokenService = shopperTokenService;
     }
-
-
+    
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<Shopper>> Get(string id)
     {
@@ -49,9 +49,9 @@ public class ShoppersController : ControllerBase
     [HttpPost("signup")]
     public async Task<IActionResult> Signup(Shopper newShopper)
     {
-        if (!_shoppersService.ValidateEmailFormat(newShopper.Email)) return StatusCode(409, new { message = "Email format is incorrect" });
+        if (!Validation.ValidateEmailFormat(newShopper.Email)) return StatusCode(409, new { message = "Email format is incorrect" });
 
-        if (_shoppersService.ValidatePasswordFormat(newShopper.Password)) return StatusCode(409, new { message = "Password format is incorrect" });
+        if (Validation.ValidatePasswordFormat(newShopper.Password)) return StatusCode(409, new { message = "Password format is incorrect" });
 
         if (await _shoppersService.IsEmailInUse(newShopper.Email)) return StatusCode(409, new { message = "Email is already in use." });
 

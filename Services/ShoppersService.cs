@@ -1,8 +1,6 @@
 using Shamazon.Models;
 using Shamazon.Helpers;
 
-using System.Text.RegularExpressions;
-using System.Net.Mail;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -59,41 +57,6 @@ namespace Shamazon.Services
             Shopper? shopper = await GetByEmailAsync(email);
 
             return Hash.VerifyHashedPassword(shopper!.Password, password);
-        }
-
-        public Boolean ValidatePasswordFormat(string password)
-        {
-            const string pattern = @"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(\W|_)).{5,}$/";
-
-            Match match = Regex.Match(password, pattern);
-
-            return match.Success;
-        }
-
-        public Boolean ValidateEmailFormat(string email)
-        {
-            if (!MailAddress.TryCreate(email, out var mailAddress))
-                return false;
-
-            // And if you want to be more strict:
-            var hostParts = mailAddress.Host.Split('.');
-
-            if (hostParts.Length == 1)
-                return false; // No dot.
-
-            if (hostParts.Any(p => p == string.Empty))
-                return false; // Double dot.
-
-            if (hostParts[^1].Length < 2)
-                return false; // TLD only one letter.
-
-            if (mailAddress.User.Contains(' '))
-                return false;
-
-            if (mailAddress.User.Split('.').Any(p => p == string.Empty))
-                return false; // Double dot or dot at end of user part.
-
-            return true;
         }
 
         public string HashPassword(string password)
