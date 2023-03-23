@@ -2,15 +2,15 @@
 import { useContext } from "react"
 
 //Util imports
-import { UserContext } from "../utils/context"
+import { UserContext } from "../../utils/context"
 
 //Component imports
 
 
-export default function Home() {
+export default function SellerHome() {
     const [user, setUser] = useContext(UserContext)
 
     return <main>
-        home
+        seller home
     </main>
 }

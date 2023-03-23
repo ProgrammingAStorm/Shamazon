@@ -3,7 +3,7 @@ import { FormEvent, useState, useContext, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom";
 
 //Util imports
-import { UserContext } from "../utils/context";
+import { UserContext } from "../../utils/context";
 
 export default function LogIn() {
     const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ export default function LogIn() {
         if (user.token !== '') navigate('/')
     }, [])
 
-    return <>
+    return <main>
         <form onSubmit={event => handleLogin(event)}>
             <input
                 type="email"
@@ -43,7 +43,7 @@ export default function LogIn() {
         </form>
 
         <Link to="/signup">Create account?</Link>
-    </>
+    </main>
 
     async function handleLogin(event: FormEvent) {
         event.preventDefault()
