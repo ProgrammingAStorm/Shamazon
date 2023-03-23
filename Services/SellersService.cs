@@ -13,7 +13,7 @@ namespace Shamazon.Services
             IOptions<ShamazonDatabaseSettings> ShamazonDatabaseSettings)
         {
             var mongoClient = new MongoClient(
-                            ShamazonDatabaseSettings.Value.ConnectionString);
+                ShamazonDatabaseSettings.Value.ConnectionString);
 
             var mongoDatabase = mongoClient.GetDatabase(
                 ShamazonDatabaseSettings.Value.DatabaseName);
@@ -21,5 +21,9 @@ namespace Shamazon.Services
             _sellersCollection = mongoDatabase.GetCollection<Seller>(
                 ShamazonDatabaseSettings.Value.SellersCollectionName);
         }
+
+        public async Task<Seller?> GetAsync(string id) => await _sellersCollection.Find(x => x.Id == id).FirstOrDefaultAsync(); 
+
+        public async Task CreateAsync(Seller newSeller) => await _sellersCollection.InsertOneAsync(newSeller);
     }
 }
