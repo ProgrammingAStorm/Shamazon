@@ -9,7 +9,7 @@ namespace Shamazon.Services
     {
         private readonly IMongoCollection<Seller> _sellersCollection;
 
-        public SellersServices(
+        public SellersService(
             IOptions<ShamazonDatabaseSettings> ShamazonDatabaseSettings)
         {
             var mongoClient = new MongoClient(
