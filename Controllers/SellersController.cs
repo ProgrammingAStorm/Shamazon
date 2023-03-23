@@ -37,4 +37,20 @@ public class SellersController : ControllerBase
 
         return StatusCode(202, new { Token = jwt });
     }
+
+    [HttpGet("login")]
+    public async Task<ActionResult<Shopper>> Login(String Email, String Password)
+    {
+        if (await _sellersService.IsEmailInUse(Email)! == false) return StatusCode(409, new { message = "Email is incorrect." });
+
+        if (await _sellersService.IsPasswordCorrect(Email, Password)! == false) return StatusCode(409, new { message = "Password is incorrect." });
+
+        var seller = await _sellersService.GetByEmailAsync(Email);
+
+        List<ClaimDTO> claims = _sellersService.CreateClaimDTOs(seller!);
+
+        var jwt = _tokenService.CreateToken(claims);
+
+        return StatusCode(202, new {token = jwt});
+    }
 }
