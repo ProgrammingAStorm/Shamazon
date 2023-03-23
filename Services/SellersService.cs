@@ -5,7 +5,7 @@ using MongoDB.Driver;
 
 namespace Shamazon.Services
 {
-    public class SellersServices
+    public class SellersService
     {
         private readonly IMongoCollection<Seller> _sellersCollection;
 
