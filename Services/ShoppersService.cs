@@ -58,10 +58,5 @@ namespace Shamazon.Services
 
             return Hash.VerifyHashedPassword(shopper!.Password, password);
         }
-
-        public string HashPassword(string password)
-        {
-            return Hash.HashPassword(password);
-        }
     }
 }

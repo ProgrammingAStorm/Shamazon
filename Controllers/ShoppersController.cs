@@ -55,7 +55,7 @@ public class ShoppersController : ControllerBase
 
         if (await _shoppersService.IsEmailInUse(newShopper.Email)) return StatusCode(409, new { message = "Email is already in use." });
 
-        newShopper.Password = _shoppersService.HashPassword(newShopper.Password);
+        newShopper.Password = Hash.HashPassword(newShopper.Password);
         await _shoppersService.CreateAsync(newShopper);
 
         Shopper? shopper = await _shoppersService.GetAsync(newShopper.Id!);
