@@ -10,7 +10,7 @@ builder.Services.Configure<ShamazonDatabaseSettings>(
 builder.Services.AddSingleton<ShoppersService>();
 builder.Services.AddSingleton<ShopperTokenService>();
 
-builder.Services.AddSingleton<SellersServices>();
+builder.Services.AddSingleton<SellersService>();
 
 builder.Services.AddControllers();
 
