@@ -47,13 +47,14 @@ namespace Shamazon.Services
 
         public List<ClaimDTO> CreateClaimDTOs(Shopper shopper)
         {
-            return new List<ClaimDTO> {
-            new ClaimDTO("Id", shopper.Id!),
-            new ClaimDTO("Email", shopper.Email),
-            new ClaimDTO("FirstName", shopper.FirstName),
-            new ClaimDTO("LastName", shopper.LastName),
-            new ClaimDTO("UserType", "Shopper"),
-        };
+            return new List<ClaimDTO>
+            {
+                new ClaimDTO("Id", shopper.Id!),
+                new ClaimDTO("Email", shopper.Email),
+                new ClaimDTO("FirstName", shopper.FirstName),
+                new ClaimDTO("LastName", shopper.LastName),
+                new ClaimDTO("UserType", "Shopper"),
+            };
         }
 
         public async Task<Boolean> IsEmailInUse(string email)
