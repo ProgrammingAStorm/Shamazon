@@ -52,6 +52,7 @@ namespace Shamazon.Services
             new ClaimDTO("Email", shopper.Email),
             new ClaimDTO("FirstName", shopper.FirstName),
             new ClaimDTO("LastName", shopper.LastName),
+            new ClaimDTO("UserType", "Shopper"),
         };
         }
 
