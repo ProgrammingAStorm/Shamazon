@@ -6,11 +6,10 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import { UserContext } from "./utils/context";
 
 //Component imports
-import Header from "./components/Header";
 import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
-import Footer from "./components/Footer";
 import NoMatch from "./components/NoMatch";
+import MainLayout from "./layouts/MainLayout";
 
 function App() {
   const [user, setUser] = useState({token: ''});
@@ -25,7 +24,7 @@ function App() {
 
   return <UserContext.Provider value={[user, setUser]}>
     <Routes >
-      <Route path="/" element={<Layout />}>
+      <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="/login" element={<LogIn />} />
 
@@ -33,16 +32,6 @@ function App() {
       </Route>
     </Routes>
   </UserContext.Provider>;
-}
-
-function Layout() {
-  return <>
-    <Header />
-
-    <Outlet />
-
-    <Footer />
-  </>;
 }
 
 export default App
