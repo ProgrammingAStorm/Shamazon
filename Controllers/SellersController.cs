@@ -32,9 +32,7 @@ public class SellersController : ControllerBase
         await _sellersService.CreateAsync(newSeller);
 
         Seller? seller = await _sellersService.GetAsync(newSeller.Id!);
-
-        List<ClaimDTO> claims = _sellersService.CreateClaimDTOs(newSeller);
-
+        List<ClaimDTO> claims = _sellersService.CreateClaimDTOs(seller!);
         var jwt = _tokenService.CreateToken(claims);
 
         return StatusCode(202, new { Token = jwt });
