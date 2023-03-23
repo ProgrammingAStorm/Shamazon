@@ -8,7 +8,7 @@ builder.Services.Configure<ShamazonDatabaseSettings>(
     builder.Configuration.GetSection("ShamazonDatabase"));
 
 builder.Services.AddSingleton<ShoppersService>();
-builder.Services.AddSingleton<ShopperTokenService>();
+builder.Services.AddSingleton<TokenService>();
 
 builder.Services.AddSingleton<SellersService>();
 

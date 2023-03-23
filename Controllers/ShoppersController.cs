@@ -11,12 +11,12 @@ namespace Shamazon.Controllers;
 public class ShoppersController : ControllerBase
 {
     private readonly ShoppersService _shoppersService;
-    private readonly ShopperTokenService _shopperTokenService;
+    private readonly TokenService _tokenService;
 
-    public ShoppersController(ShoppersService shoppersService, ShopperTokenService shopperTokenService)
+    public ShoppersController(ShoppersService shoppersService, TokenService tokenService)
     {
         _shoppersService = shoppersService;
-        _shopperTokenService = shopperTokenService;
+        _tokenService = tokenService;
     }
     
     [HttpGet("{id:length(24)}")]
@@ -41,7 +41,9 @@ public class ShoppersController : ControllerBase
 
         var shopper = await _shoppersService.GetByEmailAsync(Email);
 
-        var jwt = _shopperTokenService.CreateShopperToken(shopper!);
+        List<ClaimDTO> claims = _shoppersService.CreateClaimDTOs(shopper!);
+
+        var jwt = _tokenService.CreateToken(claims);
 
         return StatusCode(202, new {token = jwt});
     }
@@ -60,7 +62,9 @@ public class ShoppersController : ControllerBase
 
         Shopper? shopper = await _shoppersService.GetAsync(newShopper.Id!);
 
-        var jwt = _shopperTokenService.CreateShopperToken(shopper!);
+        List<ClaimDTO> claims = _shoppersService.CreateClaimDTOs(newShopper);
+
+        var jwt = _tokenService.CreateToken(claims);
 
         return StatusCode(202, new { Token = jwt });
     }

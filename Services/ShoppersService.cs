@@ -45,6 +45,16 @@ namespace Shamazon.Services
         public async Task RemoveAsync(string id) =>
             await _shoppersCollection.DeleteOneAsync(x => x.Id == id);
 
+        public List<ClaimDTO> CreateClaimDTOs(Shopper shopper)
+        {
+            return new List<ClaimDTO> {
+            new ClaimDTO("Id", shopper.Id!),
+            new ClaimDTO("Email", shopper.Email),
+            new ClaimDTO("FirstName", shopper.FirstName),
+            new ClaimDTO("LastName", shopper.LastName),
+        };
+        }
+
         public async Task<Boolean> IsEmailInUse(string email)
         {
             var shopper = await GetByEmailAsync(email);
