@@ -22,7 +22,7 @@ export default function Header() {
                 <button onClick={() => {
                     localStorage.setItem('seller-token', '');
                     setSeller({ token: '' });
-                    navigate('/seller');
+                    navigate('/seller/login');
                 }}>
                     Log out
                 </button>
