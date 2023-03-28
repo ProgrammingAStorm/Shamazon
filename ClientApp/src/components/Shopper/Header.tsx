@@ -1,31 +1,29 @@
 //React imports
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 //Util imports
 import { ShopperContext } from "../../utils/context";
 
 export default function Header() {
-    const navigate = useNavigate();
     const [shopper, setShopper] = useContext(ShopperContext)
 
     return <header>
-        <h1 onClick={() => navigate("/")}>Shamazon</h1>
+        <Link to="/">Shamazon</Link>
 
         {
             shopper.token === ''
                 ?
-                <button onClick={() => navigate("/login")}>
+                <Link to="/login">
                     Log in
-                </button>
+                </Link>
                 :
-                <button onClick={() => {
+                <Link to="/" onClick={() => {
                     localStorage.setItem('token', '')
                     setShopper({ token: '' })
-                    navigate('/')
                 }}>
                     Log out
-                </button>
+                </Link>
         }
     </header>;
 }

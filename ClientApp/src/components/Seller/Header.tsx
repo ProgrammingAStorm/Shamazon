@@ -1,31 +1,29 @@
 //React importsUser
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 //Util imports
 import { SellerContext } from "../../utils/context";
 
 export default function Header() {
-    const navigate = useNavigate();
     const [seller, setSeller] = useContext(SellerContext);
 
     return <header>
-        <h1 onClick={() => navigate("/seller")}>Shamazon</h1>
+        <Link to="/">Shamazon</Link>
 
         {
             seller.token === ''
                 ?
-                <button onClick={() => navigate("/seller/login")}>
+                <Link to="/seller/login">
                     Log in
-                </button>
+                </Link>
                 :
-                <button onClick={() => {
+                <Link to="/seller/login" onClick={() => {
                     localStorage.setItem('seller-token', '');
                     setSeller({ token: '' });
-                    navigate('/seller/login');
                 }}>
                     Log out
-                </button>
+                </Link>
         }
     </header>;
 }
