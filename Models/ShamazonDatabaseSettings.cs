@@ -9,5 +9,7 @@ namespace Shamazon.Models
         public string ShoppersCollectionName { get; set; } = null!;
 
         public string SellersCollectionName { get; set; } = null!;
+
+        public string ProductsCollectionName { get; set; } = null!;
     }
 }
