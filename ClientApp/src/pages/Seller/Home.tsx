@@ -20,7 +20,7 @@ export default function SellerHome() {
         }
 
         setSeller({token: token})
-    })
+    }, [])
     
     return <main>
         seller home
