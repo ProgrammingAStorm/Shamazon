@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 
 //Util imports
-import { UserContext } from "./utils/context";
+//import { ShopperContext, SellerContext } from "./utils/context";
 
 //Component imports
 //Shopper imports
@@ -11,7 +11,7 @@ import MainLayout from "./layouts/Shopper/MainLayout";
 import Home from "./pages/Shopper/Home";
 import LogIn from "./pages/Shopper/LogIn";
 import Signup from "./pages/Shopper/Signup";
-import NoMatch from "./components/Shopper/NoMatch";
+import NoMatch from "./components/NoMatch";
 
 //Seller imports
 import SellerLayout from "./layouts/Seller/SellerLayout";
@@ -20,37 +20,25 @@ import SellerLogin from "./pages/Seller/Login";
 import SellerSignup from "./pages/Seller/Signup";
 
 function App() {
-  const [user, setUser] = useState({ token: '' });
+  return <Routes >
+    <Route path="/" element={<MainLayout />}>
+      <Route index element={<Home />} />
 
-  useEffect(() => {
-    const token = localStorage.getItem("token")
+      <Route path="/login" element={<LogIn />} />
 
-    if (token != '') {
-      setUser({ token: token! })
-    }
-  }, [])
+      <Route path="/signup" element={<Signup />} />
+    </Route>
 
-  return <UserContext.Provider value={[user, setUser]}>
-    <Routes >
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-        
-        <Route path="/login" element={<LogIn />} />
-        
-        <Route path="/signup" element={<Signup />} />
-      </Route>
+    <Route path="/seller" element={<SellerLayout />}>
+      <Route index element={<SellerHome />} />
 
-      <Route path="/seller" element={<SellerLayout />}>
-        <Route index element={<SellerHome />} />
-        
-        <Route path="/seller/login" element={<SellerLogin />} />
-        
-        <Route path="/seller/signup" element={<SellerSignup />} />
-      </Route>
+      <Route path="/seller/login" element={<SellerLogin />} />
 
-      <Route path="*" element={<NoMatch />} />
-    </Routes>
-  </UserContext.Provider>;
+      <Route path="/seller/signup" element={<SellerSignup />} />
+    </Route>
+
+    <Route path="*" element={<NoMatch />} />
+  </Routes>;
 }
 
-export default App
+export default App;
