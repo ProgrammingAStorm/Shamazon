@@ -4,13 +4,16 @@ using Shamazon.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// Database settings service
 builder.Services.Configure<ShamazonDatabaseSettings>(
     builder.Configuration.GetSection("ShamazonDatabase"));
 
+// Model Services
 builder.Services.AddSingleton<ShoppersService>();
-builder.Services.AddSingleton<TokenService>();
-
 builder.Services.AddSingleton<SellersService>();
+
+// Util Services
+builder.Services.AddSingleton<TokenService>();
 
 builder.Services.AddControllers();
 
@@ -28,7 +31,6 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapControllers();
-app.MapGet("/api/test", (IEnumerable<EndpointDataSource> endpointSources) => new { message = string.Join("\n", endpointSources.SelectMany(source => source.Endpoints)) });
 
 app.MapFallbackToFile("index.html");
 
