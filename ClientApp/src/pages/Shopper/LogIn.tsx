@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 //Util imports
 import { UserContext } from "../../utils/context";
+import { validateEmail, validatePassword } from "../../utils/validation";
 
 export default function LogIn() {
     const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ export default function LogIn() {
 
     useEffect(() => {
         if (user.token !== '') navigate('/')
-    }, [])
+    }, []);
 
     return <main>
         <form onSubmit={event => handleLogin(event)}>
@@ -82,18 +83,6 @@ export default function LogIn() {
                 console.log("status", request.status)
                 console.log(response)
         }
-    }
-
-    function validateEmail(email: String) {
-        return email
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            );
-    };
-
-    function validatePassword(password: String) {
-        return password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(\W|_)).{5,}$/)
     }
 
     function clearForm() {
