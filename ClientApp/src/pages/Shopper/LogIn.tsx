@@ -3,7 +3,7 @@ import { FormEvent, useState, useContext, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom";
 
 //Util imports
-import { UserContext } from "../../utils/context";
+import { ShopperContext } from "../../utils/context";
 import { validateEmail, validatePassword } from "../../utils/validation";
 
 export default function LogIn() {
@@ -13,10 +13,10 @@ export default function LogIn() {
 
     const navigate = useNavigate();
 
-    const [user, setUser] = useContext(UserContext);
+    const [shopper, setShopper] = useContext(ShopperContext);
 
     useEffect(() => {
-        if (user.token !== '') navigate('/')
+        if (shopper.token !== '') navigate('/')
     }, []);
 
     return <main>
@@ -74,7 +74,7 @@ export default function LogIn() {
             case 202:
                 localStorage.setItem('token', response.token)
 
-                setUser({token: response.token})
+                setShopper({token: response.token})
 
                 navigate('/')
 
