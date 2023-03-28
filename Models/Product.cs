@@ -13,12 +13,12 @@ namespace Shamazon.Models
 
         public string Description { get; set; }
 
-        public int Price { get; set; }
+        public float Price { get; set; }
 
         public Seller ProductSeller { get; set; }
 
-        public string[] Tags { get; set; }
+        public string[]? Tags { get; set; }
 
-        public Review[] Reviews { get; set; }
+        public Review[]? Reviews { get; set; }
     }
 }
