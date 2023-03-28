@@ -66,7 +66,7 @@ export default function LogIn() {
         const response = await request.json();
 
         switch (request.status) {
-            case 401:
+            case 409:
                 setMessage(response.message);
 
                 break;
