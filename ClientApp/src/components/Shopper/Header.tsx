@@ -9,7 +9,7 @@ export default function Header() {
     const [shopper, setShopper] = useContext(ShopperContext)
 
     return <header>
-        <Link to="/">Shamazon</Link>
+        <Link to="/" >Shamazon</Link>
 
         {
             shopper.token === ''
@@ -25,5 +25,9 @@ export default function Header() {
                     Log out
                 </Link>
         }
+
+        <Link to="/seller">
+            To Seller Page
+        </Link>
     </header>;
 }

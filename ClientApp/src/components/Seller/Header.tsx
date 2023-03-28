@@ -25,5 +25,9 @@ export default function Header() {
                     Log out
                 </Link>
         }
+
+        <Link to="/">
+            To Shopper Page
+        </Link>
     </header>;
 }
