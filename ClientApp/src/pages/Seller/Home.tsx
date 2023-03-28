@@ -1,15 +1,27 @@
 //React imports
-import { useContext } from "react"
+import { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 //Util imports
-import { UserContext } from "../../utils/context"
+import { SellerContext } from "../../utils/context";
 
 //Component imports
 
-
 export default function SellerHome() {
-    const [user, setUser] = useContext(UserContext)
+    const [seller, setSeller] = useContext(SellerContext);
 
+    const navigator = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('seller-token')
+
+        if(token === '') {
+            navigator('/seller/login');
+        }
+
+        setSeller({token: token})
+    })
+    
     return <main>
         seller home
     </main>
