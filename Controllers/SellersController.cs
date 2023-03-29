@@ -39,7 +39,7 @@ public class SellersController : ControllerBase
     }
 
     [HttpGet("login")]
-    public async Task<ActionResult<Shopper>> Login(String Email, String Password)
+    public async Task<IActionResult> Login(String Email, String Password)
     {
         if (await _sellersService.IsEmailInUse(Email)! == false) return StatusCode(409, new { message = "Email is incorrect." });
 
