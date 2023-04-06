@@ -18,10 +18,11 @@ import SellerLayout from "./layouts/Seller/SellerLayout";
 import SellerHome from "./pages/Seller/Home";
 import SellerLogin from "./pages/Seller/Login";
 import SellerSignup from "./pages/Seller/Signup";
+import Upload from "./pages/Seller/Upload";
 
 function App() {
   return <Routes >
-    <Route path="/" element={<MainLayout />}>
+    <Route path="/" element={<MainLayout />} >
       <Route index element={<Home />} />
 
       <Route path="/login" element={<LogIn />} />
@@ -29,12 +30,14 @@ function App() {
       <Route path="/signup" element={<Signup />} />
     </Route>
 
-    <Route path="/seller" element={<SellerLayout />}>
+    <Route path="/seller" element={<SellerLayout />} >
       <Route index element={<SellerHome />} />
 
       <Route path="/seller/login" element={<SellerLogin />} />
 
       <Route path="/seller/signup" element={<SellerSignup />} />
+
+      <Route path="/seller/upload" element={<Upload />} />
     </Route>
 
     <Route path="*" element={<NoMatch />} />

@@ -1,6 +1,6 @@
 //React imports
 import { useEffect, useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, Link} from "react-router-dom";
 
 //Util imports
 import { SellerContext } from "../../utils/context";
@@ -23,5 +23,8 @@ export default function SellerHome() {
 
     return <main>
         seller home
+        <Link to="/seller/upload">
+            List product
+        </Link>
     </main>
 }
