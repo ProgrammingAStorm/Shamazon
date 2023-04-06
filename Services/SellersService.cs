@@ -25,11 +25,12 @@ namespace Shamazon.Services
         public async Task<Seller?> GetAsync(string id) =>
             await _sellersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-        public async Task<Seller?> GetByEmailAsync(string email)
-        {
-            return await _sellersCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
-        }
-
+        public async Task<Seller?> GetByEmailAsync(string email) => 
+            await _sellersCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
+        
+        public async Task<Seller?> GetByNameAsync(string name) =>
+            await _sellersCollection.Find(x => x.Name == name).FirstOrDefaultAsync();
+        
         public async Task CreateAsync(Seller newSeller) =>
             await _sellersCollection.InsertOneAsync(newSeller);
 
@@ -45,6 +46,13 @@ namespace Shamazon.Services
             Seller? seller = await GetByEmailAsync(email);
 
             return Hash.VerifyHashedPassword(seller!.Password, password);
+        }
+
+        public async Task<Boolean> IsNameInUse(string name)
+        {
+           var seller = await GetByNameAsync(name);
+
+           return seller == null ? false : true;
         }
 
         public List<ClaimDTO> CreateClaimDTOs(Seller seller)
