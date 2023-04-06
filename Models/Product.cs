@@ -17,7 +17,7 @@ namespace Shamazon.Models
 
         public float Price { get; set; }
 
-        public Seller ProductSeller { get; set; }
+        public string ProductSeller { get; set; }
 
         public string[]? Tags { get; set; }
 
