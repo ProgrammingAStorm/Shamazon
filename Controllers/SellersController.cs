@@ -28,6 +28,8 @@ public class SellersController : ControllerBase
 
         if (await _sellersService.IsEmailInUse(newSeller.Email)) return StatusCode(409, new { message = "Email is already in use." });
 
+        if (await _sellersService.IsNameInUse(newSeller.Name)) return StatusCode(409, new { message = "Name is already in use." });
+
         newSeller.Password = Hash.HashPassword(newSeller.Password);
         await _sellersService.CreateAsync(newSeller);
 
