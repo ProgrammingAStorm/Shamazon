@@ -23,4 +23,9 @@ namespace Shamazon.Models
 
         public Review[]? Reviews { get; set; }
     }
+
+    public class IGraphProduct: IGraphResponse
+    {
+        public Product Payload { get; set; }
+    }
 }
