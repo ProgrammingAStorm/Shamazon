@@ -1,10 +1,12 @@
+'use client'
+
 // React imports
 import { FormEvent, useState, useContext, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link";
 
 //Util imports
-import { ShopperContext } from "../../utils/context";
-import { validateEmail, validatePassword } from "../../utils/validation";
+//import { ShopperContext } from "../../../temp_files/src/utils/context";
+import { validateEmail, validatePassword } from "../../src/validation";
 
 export default function Signup() {
     // Form input state
@@ -17,13 +19,13 @@ export default function Signup() {
     const [message, setMessage] = useState('');
 
     // Navigator
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
-    const [shopper, setShopper] = useContext(ShopperContext);
+    //const [shopper, setShopper] = useContext(ShopperContext);
 
-    useEffect(() => {
-        if (shopper.token !== '') navigate('/')
-    }, []);
+    // useEffect(() => {
+    //     if (shopper.token !== '') navigate('/')
+    // }, []);
 
     return <main>
         <form onSubmit={event => handleLogin(event)}>
@@ -81,37 +83,39 @@ export default function Signup() {
 
         clearForm();
 
-        const request = await fetch(`/api/shoppers/signup`, {
-            method: "POST",
-            headers: {
-                "content-type": "application/json; charset=utf-8"
-            },
-            body: JSON.stringify({
-                FirstName: firstName,
-                LastName: lastName,
-                Email: email,
-                Password: password
-            })
-        });
-        const response = await request.json();
+        console.log(email, password, firstName, lastName)        
 
-        switch (request.status) {
-            case 409:
-                setMessage(response.message);
+        // const request = await fetch(`/api/shoppers/signup`, {
+        //     method: "POST",
+        //     headers: {
+        //         "content-type": "application/json; charset=utf-8"
+        //     },
+        //     body: JSON.stringify({
+        //         FirstName: firstName,
+        //         LastName: lastName,
+        //         Email: email,
+        //         Password: password
+        //     })
+        // });
+        // const response = await request.json();
 
-                break;
-            case 202:
-                localStorage.setItem('token', response.token)
+        // switch (request.status) {
+        //     case 409:
+        //         setMessage(response.message);
 
-                setShopper({ token: response.token })
+        //         break;
+        //     case 202:
+        //         localStorage.setItem('token', response.token)
 
-                navigate('/')
+        //         setShopper({ token: response.token })
 
-                break;
-            default:
-                console.log("status", request.status)
-                console.log(response)
-        }
+        //         navigate('/')
+
+        //         break;
+        //     default:
+        //         console.log("status", request.status)
+        //         console.log(response)
+        // }
     }
 
     function clearForm() {
@@ -119,5 +123,6 @@ export default function Signup() {
         setPassword('');
         setFirstName('');
         setLastName('');
+        setMessage('');
     }
 }

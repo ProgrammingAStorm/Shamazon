@@ -1,23 +1,25 @@
+'use client'
+
 // React imports
 import { FormEvent, useState, useContext, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link";
 
 //Util imports
-import { ShopperContext } from "../../utils/context";
-import { validateEmail, validatePassword } from "../../utils/validation";
+//import { SellerContext } from "../../../../temp_files/src/utils/context";
+import { validateEmail, validatePassword } from "../../../src/validation";
 
 export default function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const [shopper, setShopper] = useContext(ShopperContext);
+    // const [seller, setSeller] = useContext(SellerContext);
 
-    useEffect(() => {
-        if (shopper.token !== '') navigate('/')
-    }, []);
+    // useEffect(() => {
+    //     if (seller.token !== '') navigate('/')
+    // }, []);
 
     return <main>
         <form onSubmit={event => handleLogin(event)}>
@@ -43,7 +45,7 @@ export default function LogIn() {
             {message != '' ? <p>{message}</p> : <p></p> }
         </form>
 
-        <Link to="/signup">Create account?</Link>
+        <Link href="/seller/signup">Create account?</Link>
     </main>
 
     async function handleLogin(event: FormEvent) {
@@ -61,32 +63,35 @@ export default function LogIn() {
 
         clearForm();
 
-        const request = await fetch(`/api/shoppers/login?email=${email}&password=${password}`, {
-            method: "GET",
-        });
-        const response = await request.json();
+        console.log(email, password)
 
-        switch (request.status) {
-            case 409:
-                setMessage(response.message);
+        // const request = await fetch(`/api/sellers/login?email=${email}&password=${password}`, {
+        //     method: "GET",
+        // });
+        // const response = await request.json();
 
-                break;
-            case 202:
-                localStorage.setItem('token', response.token)
+        // switch (request.status) {
+        //     case 409:
+        //         setMessage(response.message);
 
-                setShopper({token: response.token})
+        //         break;
+        //     case 202:
+        //         localStorage.setItem('seller-token', response.token)
 
-                navigate('/')
+        //         setSeller({token: response.token})
 
-                break;
-            default:
-                console.log("status", request.status)
-                console.log(response)
-        }
+        //         navigate('/seller')
+
+        //         break;
+        //     default:
+        //         console.log("status", request.status)
+        //         console.log(response)
+        // }
     }
 
     function clearForm() {
-        setEmail('')
-        setPassword('')
+        setEmail('');
+        setPassword('');
+        setMessage('');
     }
 }

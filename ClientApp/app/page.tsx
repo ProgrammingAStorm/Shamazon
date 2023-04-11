@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 //Component imports
 
-export default function Home() {
+export default async function Home() {
     return <main>
         home
     </main>;

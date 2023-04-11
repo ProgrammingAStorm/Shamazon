@@ -1,5 +1,7 @@
+'use client'
+
 import { FormEvent, useRef, useState } from "react";
-import { fileToBase64, isFileAnImage } from "../../utils/file";
+import { fileToBase64, isFileAnImage } from "../../../src/file";
 
 export default function Upload() {
     const [name, setName] = useState('');
@@ -110,7 +112,8 @@ export default function Upload() {
         setPrice('');
         setFiles(undefined);
         setDescription('');
-        clearFileInput()
+        clearFileInput();
+        setMessage('');
     }
 
     function clearFileInput() {
