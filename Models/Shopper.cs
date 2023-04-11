@@ -27,11 +27,8 @@ namespace Shamazon.Models
     }
 
 
-    public class IGraphShopper
+    public class IGraphShopper : IGraphResponse
     {
-        public string Token { get; set; }
-        public int Status { get; set; }
-
         public Shopper Payload { get; set; }
     }
 }
