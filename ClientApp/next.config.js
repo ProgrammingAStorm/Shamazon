@@ -9,7 +9,7 @@ const rewrites = () => {
 };
 
 const nextConfig = {
-  experimental: {
+    experimental: {
     appDir: true,
   },
   reactStrictMode: true,
