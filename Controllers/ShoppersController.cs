@@ -4,6 +4,7 @@ using Shamazon.Helpers;
 
 using GraphQL.AspNet.Controllers;
 using GraphQL.AspNet.Attributes;
+
 namespace Shamazon.Controllers;
 
 public class ShoppersController : GraphController
