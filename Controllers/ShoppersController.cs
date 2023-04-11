@@ -18,8 +18,8 @@ public class ShoppersController : GraphController
         _tokenService = tokenService;
     }
 
-    [QueryRoot("person")]
-    public async Task<IGraphShopper> RetrievePerson(string id)
+    [QueryRoot("shopper")]
+    public async Task<IGraphShopper> RetrieveShopper(string id)
     {
         var shopper = await _shoppersService.GetAsync(id);
 
