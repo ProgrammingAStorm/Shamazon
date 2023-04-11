@@ -145,12 +145,17 @@ publish/
 # The packages folder can be ignored because of Package Restore
 **/packages/*
 # except build/, which is used as an MSBuild target.
-!**/packages/build/
-# Uncomment if necessary however generally it will be regenerated when needed
-#!**/packages/repositories.config
+!**/packages/build/var byteArrays = new List<byte>[newProduct.ImageUrls.Length];
 
-# Microsoft Azure Build Output
-csx/
+        foreach (var item in newProduct.ImageUrls)
+        {
+            var splitString = item.Split(',')[1];
+
+            List<byte> decodedString = Convert.FromBase64String(splitString).ToList();
+
+            byteArrays.Append(decodedString);
+        }
+
 *.build.csdef
 
 # Microsoft Azure Emulator
@@ -230,3 +235,5 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+temp_files/

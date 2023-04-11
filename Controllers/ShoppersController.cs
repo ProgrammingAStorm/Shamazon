@@ -4,11 +4,11 @@ using Shamazon.Helpers;
 
 using Microsoft.AspNetCore.Mvc;
 
+using GraphQL.AspNet.Controllers;
+using GraphQL.AspNet.Attributes;
 namespace Shamazon.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class ShoppersController : ControllerBase
+public class ShoppersController : GraphController
 {
     private readonly ShoppersService _shoppersService;
     private readonly TokenService _tokenService;
@@ -18,26 +18,44 @@ public class ShoppersController : ControllerBase
         _shoppersService = shoppersService;
         _tokenService = tokenService;
     }
-    
-    [HttpGet("{id:length(24)}")]
-    public async Task<ActionResult<Shopper>> Get(string id)
+
+    [QueryRoot("person")]
+    public async Task<IGraphShopper> RetrievePerson(string id)
     {
         var shopper = await _shoppersService.GetAsync(id);
 
         if (shopper is null)
         {
-            return NotFound();
+            return new IGraphShopper()
+            {
+                Token = String.Empty,
+                Status = 409,
+                Payload = null
+            };
         }
 
-        return shopper;
+        return new IGraphShopper()
+        {
+            Token = String.Empty,
+            Status = 202,
+            Payload = shopper!
+        };
     }
 
-    [HttpGet("login")]
-    public async Task<ActionResult<Shopper>> Login(String Email, String Password)
+    [QueryRoot("login")]
+    public async Task<IGraphShopper> Login(string Email, string Password)
     {
-        if (await _shoppersService.IsEmailInUse(Email)! == false) return StatusCode(409, new { message = "Email is incorrect." });
+        if (await _shoppersService.IsEmailInUse(Email)! == false) return new IGraphShopper()
+        {
+            Token = "Email is incorrect.",
+            Status = 409,
+        };
 
-        if (await _shoppersService.IsPasswordCorrect(Email, Password)! == false) return StatusCode(409, new { message = "Password is incorrect." });
+        if (await _shoppersService.IsPasswordCorrect(Email, Password)! == false) return new IGraphShopper()
+        {
+            Token = "Password is incorrect.",
+            Status = 409,
+        };
 
         var shopper = await _shoppersService.GetByEmailAsync(Email);
 
@@ -45,59 +63,51 @@ public class ShoppersController : ControllerBase
 
         var jwt = _tokenService.CreateToken(claims);
 
-        return StatusCode(202, new {token = jwt});
+        return new IGraphShopper()
+        {
+            Status = 202,
+            Token = jwt,
+            Payload = shopper!
+        };
     }
 
-    [HttpPost("signup")]
-    public async Task<IActionResult> Signup(Shopper newShopper)
+    [MutationRoot("signup")]
+    public async Task<IGraphShopper> Signup(Shopper newShopper)
     {
-        if (!Validation.ValidateEmailFormat(newShopper.Email)) return StatusCode(409, new { message = "Email format is incorrect" });
+        if (!Validation.ValidateEmailFormat(newShopper.Email)) return new IGraphShopper()
+        {
+            Token = "Email format is incorrect",
+            Status = 202,
+            Payload = null!
+        };
 
-        if (Validation.ValidatePasswordFormat(newShopper.Password)) return StatusCode(409, new { message = "Password format is incorrect" });
+        if (Validation.ValidatePasswordFormat(newShopper.Password)) return new IGraphShopper()
+        {
+            Token = "Password format is incorrect",
+            Status = 202,
+            Payload = null!
+        };
 
-        if (await _shoppersService.IsEmailInUse(newShopper.Email)) return StatusCode(409, new { message = "Email is already in use." });
+        if (await _shoppersService.IsEmailInUse(newShopper.Email)) return new IGraphShopper()
+        {
+            Token = "Email is already in use.",
+            Status = 202,
+            Payload = null!
+        };
 
-        newShopper.Password = Hash.HashPassword(newShopper.Password);
         await _shoppersService.CreateAsync(newShopper);
 
-        Shopper? shopper = await _shoppersService.GetAsync(newShopper.Id!);
+        Shopper? shopper = await _shoppersService.GetByEmailAsync(newShopper.Email);
 
         List<ClaimDTO> claims = _shoppersService.CreateClaimDTOs(newShopper);
 
         var jwt = _tokenService.CreateToken(claims);
 
-        return StatusCode(202, new { Token = jwt });
-    }
-
-    [HttpPut("{id:length(24)}")]
-    public async Task<IActionResult> Update(string id, Shopper updatedShopper)
-    {
-        var shopper = await _shoppersService.GetAsync(id);
-
-        if (shopper is null)
+        return new IGraphShopper()
         {
-            return NotFound();
-        }
-
-        updatedShopper.Id = shopper.Id;
-
-        await _shoppersService.UpdateAsync(id, updatedShopper);
-
-        return NoContent();
-    }
-
-    [HttpDelete("{id:length(24)}")]
-    public async Task<IActionResult> Delete(string id)
-    {
-        var shopper = await _shoppersService.GetAsync(id);
-
-        if (shopper is null)
-        {
-            return NotFound();
-        }
-
-        await _shoppersService.RemoveAsync(id);
-
-        return NoContent();
+            Status = 202,
+            Token = jwt,
+            Payload = shopper!
+        };
     }
 }

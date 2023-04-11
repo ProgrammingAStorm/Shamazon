@@ -25,5 +25,14 @@ namespace Shamazon.Models
 
         public Product[]? Cart { get; set; }
     }
+
+
+    public class IGraphShopper
+    {
+        public string Token { get; set; }
+        public int Status { get; set; }
+
+        public Shopper Payload { get; set; }
+    }
 }
 
