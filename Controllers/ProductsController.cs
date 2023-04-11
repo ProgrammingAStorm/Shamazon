@@ -1,19 +1,20 @@
 using Shamazon.Models;
 
-using Microsoft.AspNetCore.Mvc;
+using GraphQL.AspNet.Controllers;
+using GraphQL.AspNet.Attributes;
 
 namespace Shamazon.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class ProductsController : ControllerBase
+[GraphRoute("Products")]
+public class ProductsController : GraphController
 {
-    [HttpPost("upload")]
-    public async Task<IActionResult> Upload(Product newProduct)
+    [Mutation("Upload")]
+    public async Task<IGraphProduct> Upload(Product newProduct)
     {
         // TODO enforce validation so that no products with duplicated names are generated
+        // TODO enforce validation so that base64 strings are actually base64 strings
 
-        var byteArrays = new List<byte>[newProduct.ImageUrls.Length];
+        var byteArrays = new List<byte>[newProduct.ImageUrls.ToArray().Length];
 
         foreach (var item in newProduct.ImageUrls)
         {
@@ -24,11 +25,17 @@ public class ProductsController : ControllerBase
             byteArrays.Append(decodedString);
         }
 
-        // TODO send byte arrys to AWS S3 bucket to be stored 
+        // TODO convert byte arrays into memory streams
+        // TODO send memory streams to AWS S3 bucket to be stored 
         // TODO replice ImageUrls property in newProduct with actual list of Cloud Flare links of the newly added images
         // TODO use newProduct to generate a new product in the database
         // TODO return the newly created product 
 
-        return StatusCode(202, new { test = "success" });
+        return new IGraphProduct()
+        {
+            Token = "Test",
+            Status = 202,
+            Payload = null!
+        };
     }
 }
