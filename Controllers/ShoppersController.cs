@@ -2,8 +2,6 @@ using Shamazon.Models;
 using Shamazon.Services;
 using Shamazon.Helpers;
 
-using Microsoft.AspNetCore.Mvc;
-
 using GraphQL.AspNet.Controllers;
 using GraphQL.AspNet.Attributes;
 namespace Shamazon.Controllers;
