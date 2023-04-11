@@ -41,7 +41,7 @@ public class ShoppersController : GraphController
         };
     }
 
-    [QueryRoot("login")]
+    [QueryRoot("shopperLogin")]
     public async Task<IGraphShopper> Login(string Email, string Password)
     {
         if (await _shoppersService.IsEmailInUse(Email)! == false) return new IGraphShopper()
@@ -70,7 +70,7 @@ public class ShoppersController : GraphController
         };
     }
 
-    [MutationRoot("signup")]
+    [MutationRoot("shopperSignup")]
     public async Task<IGraphShopper> Signup(Shopper newShopper)
     {
         if (!Validation.ValidateEmailFormat(newShopper.Email)) return new IGraphShopper()
