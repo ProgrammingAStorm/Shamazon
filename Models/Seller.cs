@@ -19,4 +19,9 @@ namespace Shamazon.Models
 
         public Order[]? Orders { get; set; }
     }
+
+    public class IGraphSeller : IGraphResponse
+    {
+        public Seller Payload { get; set; }
+    }
 }

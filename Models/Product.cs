@@ -13,7 +13,7 @@ namespace Shamazon.Models
 
         public string Description { get; set; }
 
-        public string[] ImageUrls { get; set; }
+        public IEnumerable<string> ImageUrls { get; set; }
 
         public float Price { get; set; }
 
@@ -22,5 +22,10 @@ namespace Shamazon.Models
         public string[]? Tags { get; set; }
 
         public Review[]? Reviews { get; set; }
+    }
+
+    public class IGraphProduct: IGraphResponse
+    {
+        public Product Payload { get; set; }
     }
 }
