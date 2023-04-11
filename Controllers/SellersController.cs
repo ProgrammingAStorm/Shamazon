@@ -30,7 +30,7 @@ public class SellersController : GraphController
             {
                 Token = String.Empty,
                 Status = 409,
-                Payload = null
+                Payload = null!
             };
         }
 
