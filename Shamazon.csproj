@@ -16,7 +16,6 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.Core" Version="3.7.106.13" />
     <PackageReference Include="GraphQL.AspNet" Version="1.1.0" />
-    <PackageReference Include="GraphQL.Upload.AspNetCore" Version="3.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="7.0.3" />
     <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />

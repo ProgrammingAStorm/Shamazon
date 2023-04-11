@@ -19,7 +19,6 @@ builder.Services.AddSingleton<TokenService>();
 
 // Add graphql services to the DI container
 builder.Services.AddGraphQL();
-//builder.Services.AddControllers();
 
 var app = builder.Build();
 
