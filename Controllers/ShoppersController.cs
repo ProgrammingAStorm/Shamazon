@@ -7,6 +7,7 @@ using GraphQL.AspNet.Attributes;
 
 namespace Shamazon.Controllers;
 
+[GraphRoute("Shoppers")]
 public class ShoppersController : GraphController
 {
     private readonly ShoppersService _shoppersService;
@@ -18,7 +19,7 @@ public class ShoppersController : GraphController
         _tokenService = tokenService;
     }
 
-    [QueryRoot("shopper")]
+    [Query("Shopper")]
     public async Task<IGraphShopper> RetrieveShopper(string id)
     {
         var shopper = await _shoppersService.GetAsync(id);
@@ -41,7 +42,7 @@ public class ShoppersController : GraphController
         };
     }
 
-    [QueryRoot("shopperLogin")]
+    [Query("Login")]
     public async Task<IGraphShopper> Login(string Email, string Password)
     {
         if (await _shoppersService.IsEmailInUse(Email)! == false) return new IGraphShopper()
@@ -70,7 +71,7 @@ public class ShoppersController : GraphController
         };
     }
 
-    [MutationRoot("shopperSignup")]
+    [Mutation("Signup")]
     public async Task<IGraphShopper> Signup(Shopper newShopper)
     {
         if (!Validation.ValidateEmailFormat(newShopper.Email)) return new IGraphShopper()
