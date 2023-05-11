@@ -30,7 +30,7 @@ public class ShoppersController : GraphController
             {
                 Token = String.Empty,
                 Status = 409,
-                Payload = null
+                Payload = null!
             };
         }
 
@@ -42,7 +42,7 @@ public class ShoppersController : GraphController
         };
     }
 
-    [Query("Login")]
+    [Mutation("Login")]
     public async Task<IGraphShopper> Login(string Email, string Password)
     {
         if (await _shoppersService.IsEmailInUse(Email)! == false) return new IGraphShopper()
