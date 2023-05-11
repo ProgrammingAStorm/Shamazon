@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
-const rewrites = () => {
-  return [
-    {
-      source: "/graphql/:path*",
-      destination: "https://localhost:7088/grapgql/:path*",
-    },
-  ];
-};
+// const rewrites = () => {
+//   return [
+//     {
+//       source: "/graphql/:path*",
+//       destination: "https://localhost:7088/grapgql/:path*",
+//     },
+//   ];
+// };
 
 const nextConfig = {
     experimental: {
@@ -18,7 +18,7 @@ const nextConfig = {
     path: '/',
   },
   //output: "export",
-  rewrites
+  // rewrites
 }
 
 module.exports = nextConfig

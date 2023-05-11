@@ -1,5 +1,4 @@
 //React imports
-import { useState, useEffect } from "react";
 
 //Util imports
 
