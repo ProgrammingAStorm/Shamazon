@@ -1,25 +1,43 @@
 'use client';
 
 // React imports
-import { FormEvent, useState, /*useContext, useEffect*/ } from "react"
+import { FormEvent, useState, } from "react"
 import Link from "next/link";
 
 //Util imports
-//import { ShopperContext } from "../../../temp_files/src/utils/context";
 import { validateEmail, validatePassword } from "../../src/validation";
+
+import { useMutation, gql } from '@apollo/client';
+
+const LOGIN_MUTATION = gql`
+    mutation login(
+        $email: String!
+        $password: Sting!
+    ){
+        login(email: $email, password: $password) {
+            token
+            status
+            payload {
+                id
+                email
+                firstName
+                lastName
+            }
+        }
+    }
+`;
 
 export default function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
-    //const navigate = useNavigate();
-
-    //const [shopper, setShopper] = useContext(ShopperContext);
-
-    // useEffect(() => {
-    //     if (shopper.token !== '') navigate('/')
-    // }, []);
+    const [login] = useMutation(LOGIN_MUTATION, {
+        variables: {
+            email,
+            password
+        }
+    })
 
     return <main>
         <form
@@ -65,7 +83,9 @@ export default function LogIn() {
 
         clearForm();
 
-        console.log(email, password)
+        const something = await login();
+
+        console.log(something)
 
         // const request = await fetch(`/api/shoppers/login?email=${email}&password=${password}`, {
         //     method: "GET",
@@ -94,5 +114,6 @@ export default function LogIn() {
     function clearForm() {
         setEmail('');
         setPassword('');
+        setMessage('');
     }
 }
