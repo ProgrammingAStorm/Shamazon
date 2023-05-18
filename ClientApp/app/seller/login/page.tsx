@@ -1,97 +1,96 @@
 'use client'
 
 // React imports
-import { FormEvent, useState, useContext, useEffect } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 import Link from "next/link";
 
 //Util imports
-//import { SellerContext } from "../../../../temp_files/src/utils/context";
-import { validateEmail, validatePassword } from "../../../src/validation";
+import { validateEmail, validatePassword } from "@/src/validation";
+import { handleLogin } from "./actions";
 
 export default function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
-
-    // const navigate = useNavigate();
-
-    // const [seller, setSeller] = useContext(SellerContext);
-
-    // useEffect(() => {
-    //     if (seller.token !== '') navigate('/')
-    // }, []);
+    const [messages, setMessages] = useState({ password: '', email: '' });
 
     return <main>
-        <form onSubmit={event => handleLogin(event)}>
+        <form onSubmit={handleSubmit}>
             <input
                 type="email"
                 placeholder="Email"
                 className="border-cyan-900 border m-1"
+                name="email"
                 value={email}
                 required
-                onChange={event => setEmail(event.target.value)}
+                onChange={handleEmail}
             ></input>
             <input
                 type="password"
                 placeholder="Password"
                 className="border-cyan-900 border m-1"
+                name="password"
                 value={password}
                 required
-                onChange={event => setPassword(event.target.value)}
+                onChange={handlePassword}
             ></input>
 
             <button type="submit" className="border-cyan-900 border m-1 p-1">Submit</button>
 
-            {message != '' ? <p>{message}</p> : <p></p> }
+            {messages.email != '' || messages.password != ''
+                ? <div>
+                    <p>{messages.email}</p>
+                    <p>{messages.password}</p>
+                </div>
+                : <p></p>}
         </form>
 
         <Link href="/seller/signup">Create account?</Link>
     </main>
 
-    async function handleLogin(event: FormEvent) {
-        event.preventDefault()
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
 
-        if (!validateEmail(email)) {
-            clearForm();
-            return setMessage("Email is not valid.");
-        }
+        if (!validateEmail(email) || !validatePassword(password)) return;
 
-        if (!validatePassword(password)) {
-            clearForm();
-            return setMessage("Password is not valid.");
-        }
+        const formData = new FormData();
 
-        clearForm();
+        formData.append('email', email);
+        formData.append('password', password);
 
-        console.log(email, password)
+        const userData = await handleLogin(formData);
 
-        // const request = await fetch(`/api/sellers/login?email=${email}&password=${password}`, {
-        //     method: "GET",
-        // });
-        // const response = await request.json();
-
-        // switch (request.status) {
-        //     case 409:
-        //         setMessage(response.message);
-
-        //         break;
-        //     case 202:
-        //         localStorage.setItem('seller-token', response.token)
-
-        //         setSeller({token: response.token})
-
-        //         navigate('/seller')
-
-        //         break;
-        //     default:
-        //         console.log("status", request.status)
-        //         console.log(response)
-        // }
+        console.log(userData);
     }
 
-    function clearForm() {
-        setEmail('');
-        setPassword('');
-        setMessage('');
+    function handleEmail(e: ChangeEvent<HTMLInputElement>) {
+        const targetEmail = e.target.value;
+
+        setEmail(targetEmail);
+
+        if (targetEmail === '') {
+            return setMessages({ ...messages, email: '' })
+        }
+
+        if (!validateEmail(targetEmail)) {
+            setMessages({ ...messages, email: 'Email format is incorrect.' })
+        } else {
+            setMessages({ ...messages, email: '' })
+        }
+    }
+
+    function handlePassword(e: ChangeEvent<HTMLInputElement>) {
+        const targetPassword = e.target.value;
+
+        setPassword(targetPassword);
+
+        if (targetPassword === '') {
+            return setMessages({ ...messages, password: '' })
+        }
+
+        if (!validatePassword(targetPassword)) {
+            setMessages({ ...messages, password: 'Password format is incorrect.' })
+        } else {
+            setMessages({ ...messages, password: '' })
+        }
     }
 }
