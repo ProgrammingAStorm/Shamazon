@@ -1,3 +1,6 @@
+import { store } from '@/src/store'
+import { Provider } from 'react-redux'
+
 import Footer from './(Footer)'
 import Header from './(Header)'
 import './globals.css'
@@ -15,9 +18,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <Provider store={store}>
+          <Header />
+          {children}
+          <Footer />
+        </Provider>
       </body>
     </html>
   )
