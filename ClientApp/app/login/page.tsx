@@ -14,23 +14,7 @@ export default function LogIn() {
     const [messages, setMessages] = useState({ password: '', email: '' });
 
     return <main>
-        <form
-        onSubmit={async (event: FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-
-            if(!validateEmail(email) || !validatePassword(password)) return;
-
-            const formData = new FormData();
-            
-            formData.append('email', email);
-            formData.append('password', password);
-            
-            const userData = await handleLogin(formData);
-
-            console.log(userData);
-        }} 
-        //action={handleLogin}
-        >
+        <form onSubmit={handleSubmit}>
             <input
                 type="email"
                 placeholder="Email"
@@ -63,12 +47,27 @@ export default function LogIn() {
         <Link href="/signup">Create account?</Link>
     </main>
 
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        if (!validateEmail(email) || !validatePassword(password)) return;
+
+        const formData = new FormData();
+
+        formData.append('email', email);
+        formData.append('password', password);
+
+        const userData = await handleLogin(formData);
+
+        console.log(userData);
+    }
+
     function handleEmail(e: ChangeEvent<HTMLInputElement>) {
         const targetEmail = e.target.value;
 
         setEmail(targetEmail);
 
-        if(targetEmail === '') {
+        if (targetEmail === '') {
             return setMessages({ ...messages, email: '' })
         }
 
@@ -84,7 +83,7 @@ export default function LogIn() {
 
         setPassword(targetPassword);
 
-        if(targetPassword === '') {
+        if (targetPassword === '') {
             return setMessages({ ...messages, password: '' })
         }
 
