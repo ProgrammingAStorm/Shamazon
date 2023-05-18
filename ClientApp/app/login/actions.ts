@@ -14,9 +14,12 @@ const LOGIN_MUTATION = gql`
                 status
                 payload {
                     id
-                    email
                     firstName
                     lastName
+                    interests
+                    reviews
+                    orders
+                    cart
                 }
             }
         }
