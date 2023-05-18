@@ -57,9 +57,18 @@ export default function LogIn() {
         formData.append('email', email);
         formData.append('password', password);
 
-        const userData = await handleLogin(formData);
+        const data = await handleLogin(formData);
 
-        console.log(userData);
+        switch (data.status) {
+            case 202:
+                console.log(data)
+                break;
+            case 409:
+                setMessages({ ...messages, email: data.token })
+                break;
+            default:
+                console.log(data)
+        }
     }
 
     function handleEmail(e: ChangeEvent<HTMLInputElement>) {
