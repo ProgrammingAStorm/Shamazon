@@ -64,10 +64,12 @@ export default function LogIn() {
                 console.log(data)
                 break;
             case 409:
-                setMessages({ ...messages, email: data.token })
+                setMessages({ ...messages, email: data.token });
+                clearForm()
                 break;
             default:
-                console.log(data)
+                console.log(data);
+                clearForm()
         }
     }
 
@@ -101,5 +103,11 @@ export default function LogIn() {
         } else {
             setMessages({ ...messages, password: '' })
         }
+    }
+
+    function clearForm() {
+        setEmail('');
+        setPassword('');
+        setMessages({ email: '', password: '' });
     }
 }
