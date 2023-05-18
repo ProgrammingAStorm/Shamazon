@@ -1,7 +1,7 @@
 'use client'
 
 // React imports
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 import Link from "next/link";
 
 //Util imports
@@ -14,7 +14,23 @@ export default function LogIn() {
     const [messages, setMessages] = useState({ password: '', email: '' });
 
     return <main>
-        <form action={handleLogin}>
+        <form
+        onSubmit={async (event: FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+
+            if(!validateEmail(email) || !validatePassword(password)) return;
+
+            const formData = new FormData();
+            
+            formData.append('email', email);
+            formData.append('password', password);
+            
+            const userData = await handleLogin(formData);
+
+            console.log();
+        }} 
+        //action={handleLogin}
+        >
             <input
                 type="email"
                 placeholder="Email"
