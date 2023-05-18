@@ -27,7 +27,7 @@ export default function LogIn() {
             
             const userData = await handleLogin(formData);
 
-            console.log();
+            console.log(userData);
         }} 
         //action={handleLogin}
         >
