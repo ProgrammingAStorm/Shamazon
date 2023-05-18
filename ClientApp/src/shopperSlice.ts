@@ -4,8 +4,8 @@ const initialState = {
     isLoggedIn: false
 }
 
-export const userSlice = createSlice({
-    name: 'user',
+export const shopperSlice = createSlice({
+    name: 'shopper',
     initialState,
     reducers: {
         toggleLoggedIn: state => {
@@ -14,6 +14,6 @@ export const userSlice = createSlice({
     }
 });
 
-export const { toggleLoggedIn } = userSlice.actions;
+export const { toggleLoggedIn } = shopperSlice.actions;
 
-export default userSlice.reducer;
+export default shopperSlice.reducer;
