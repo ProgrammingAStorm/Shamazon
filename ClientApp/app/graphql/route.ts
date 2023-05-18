@@ -4,14 +4,31 @@ import { NextRequest } from 'next/server';
 import { gql } from '@apollo/client';
 
 const resolvers = {
-  Query: {
-    hello: () => 'world',
-  },
+  Mutate: {
+    login: (parent, args, context, info) => {
+      console.log(args);
+
+      return "bruh"
+    }
+  }
 };
 
 const typeDefs = gql`
-  type Query {
-    hello: String
+  type Mutate {
+    login: String
+  }
+
+  type ShopperResponse {
+    token: String
+    status: String
+    payload: Shopper
+  }
+
+  type Shopper {
+    id: String
+    email: String
+    firstName: String
+    lastName: String
   }
 `;
 

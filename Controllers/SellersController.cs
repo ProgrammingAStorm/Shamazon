@@ -42,7 +42,7 @@ public class SellersController : GraphController
         };
     }
 
-    [Query("Login")]
+    [Mutation("Login")]
     public async Task<IGraphSeller> Login(string Email, string Password)
     {
         if (await _sellersService.IsEmailInUse(Email)! == false) return new IGraphSeller()
