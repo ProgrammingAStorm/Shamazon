@@ -1,44 +1,57 @@
 //React imports
-import { useContext } from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 //Util imports
-//import { ShopperContext } from "../../utils/context";
 
 export default function Header() {
-    //const [shopper, setShopper] = useContext(ShopperContext)
+    const shopper = useSelector(state => state.shopper)
+    const user = useSelector(state => state.user)
 
     return <header>
         <Link href="/" >Shamazon</Link>
 
-        {/*shopper.token === ''
-            ?*/}
-        <Link href="/login">
-            Log in
-        </Link>
-        {/*:*/}
-        <Link href="/" /*onClick={() => {
-                // localStorage.setItem('hrefken', '')
-                // setShopper({ hrefken: '' })
-            }}*/>
-            Log out
-        </Link>
+        {user.isShopper
+            ? (
+                <>
+                    {!shopper.isLoggedIn
+                        ?
+                        <Link href="/login">
+                            Log in
+                        </Link>
+                        :
+                        <Link href="/" onClick={handleShopperLogout}>
+                            Log out
+                        </Link>}
 
-        <Link href="/seller/login">
-        To Seller Login</Link>
+                    <Link href="/seller/login">
+                        To Seller Login
+                    </Link>
+                </>
+            )
+            : (
+                <>
+                    <Link href="/seller">
+                        Seller Logout
+                    </Link>
 
-            <Link href="/seller">Seller Logout</Link>
+                    <Link href="/seller">
+                        To Seller Page
+                    </Link>
 
-        <Link href="/seller">
-            To Seller Page
-        </Link>
+                    <Link href="/seller/upload">
+                        To Seller Upload
+                    </Link>
 
-        <Link href="/seller/upload">
-            To Seller Upload
-        </Link>
-
-        <Link href="/">
-            To Shopper Page
-        </Link>
+                    <Link href="/">
+                        To Shopper Page
+                    </Link>
+                </>
+            )
+        }
     </header>;
+
+    function handleShopperLogout() {
+
+    }
 }
