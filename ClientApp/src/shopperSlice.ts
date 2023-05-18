@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    isLoggedIn: false
+    isLoggedIn: false,
+    shopper: null,
+    token: null
 }
 
 export const shopperSlice = createSlice({
@@ -10,10 +12,35 @@ export const shopperSlice = createSlice({
     reducers: {
         toggleLoggedIn: state => {
             state.isLoggedIn = !state.isLoggedIn;
+        },
+        logIn: (state, action) => {
+            const { shopper, token } = action.payload;
+
+            state.shopper = shopper;
+            state.token = token;
+
+            localStorage.setItem('shopperToken', JSON.stringify(shopper));
+        },
+        logOut: state => {
+            state.shopper = null;
+            state.token = null;
+
+            localStorage.setItem('shopperToken', '');
+        },
+        getToken: state => {
+            const token = JSON.parse(localStorage.getItem('shopperToken')!);
+
+            if(token === null || token === undefined || token === '') {
+                state.token = null;
+                return;
+            }
+
+            state.token = token;
+            toggleLoggedIn();
         }
     }
 });
 
-export const { toggleLoggedIn } = shopperSlice.actions;
+export const { toggleLoggedIn, logIn, logOut, getToken } = shopperSlice.actions;
 
 export default shopperSlice.reducer;
