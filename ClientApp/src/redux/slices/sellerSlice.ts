@@ -29,7 +29,7 @@ export const sellerSlice = createSlice({
     name: 'seller',
     initialState,
     reducers: {
-        logIn: (state, action: PayloadAction<ISellerState>) => {
+        sellerLogIn: (state, action: PayloadAction<ISellerState>) => {
             const { seller, token } = action.payload;
 
             state.seller = seller;
@@ -37,13 +37,13 @@ export const sellerSlice = createSlice({
 
             localStorage.setItem('sellerToken', JSON.stringify(token));
         },
-        logOut: state => {
+        sellerLogOut: state => {
             state.seller = null;
             state.token = null;
 
             localStorage.setItem('sellerToken', '');
         },
-        getToken: state => {
+        sellerGetToken: state => {
             const token = JSON.parse(localStorage.getItem('sellerToken')!);
 
             if (token === null || token === undefined || token === '') {
@@ -56,7 +56,7 @@ export const sellerSlice = createSlice({
     }
 });
 
-export const { logIn, logOut, getToken } = sellerSlice.actions;
+export const { sellerLogIn, sellerLogOut, sellerGetToken } = sellerSlice.actions;
 
 export default sellerSlice.reducer;
 
