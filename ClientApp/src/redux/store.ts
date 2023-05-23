@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import sellerSlice from './slices/sellerSlice';
 
 import shopperReducer from './slices/shopperSlice';
 import userReducer from './slices/userSlice';
@@ -6,6 +7,7 @@ import userReducer from './slices/userSlice';
 export const store = configureStore({
     reducer: {
         shopper: shopperReducer,
+        seller: sellerSlice,
         user: userReducer
     }
 })
