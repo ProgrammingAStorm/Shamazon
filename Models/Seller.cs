@@ -18,6 +18,13 @@ namespace Shamazon.Models
         public Product[]? Products { get; set; }
 
         public Order[]? Orders { get; set; }
+
+        public Seller(string name, string email, string password)
+        {
+            Name = name;
+            Email = email;
+            Password = password;
+        }
     }
 
     public class IGraphSeller : IGraphResponse
