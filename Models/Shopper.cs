@@ -24,6 +24,13 @@ namespace Shamazon.Models
         public Order[]? Orders { get; set; }
 
         public Product[]? Cart { get; set; }
+
+        public Shopper(string email, string password, string firstName, string lastName) {
+            Email = email;
+            Password = password;
+            FirstName = firstName;
+            LastName = lastName;
+        }
     }
 
 
