@@ -9,11 +9,11 @@ export interface ISellerState {
 }
 
 export interface ISeller {
-    id: string;
-    email: string | null;
-    name: string;
-    orders: IOrder[];
-    products: IProduct[]
+    Id: string;
+    Email: string | null;
+    Name: string;
+    Orders: IOrder[];
+    Products: IProduct[]
 }
 
 const initialState: ISellerState = {
