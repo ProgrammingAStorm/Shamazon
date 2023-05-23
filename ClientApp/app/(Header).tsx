@@ -12,7 +12,7 @@ import jwtDecode from "jwt-decode";
 import { toggleShopper } from "@/src/redux/slices/userSlice";
 
 export default function Header() {
-    const shopper = useSelector(state => state.shopper);
+    const shopper = useSelector();
     const user = useSelector(state => state.user);
 
     const dispatch = useDispatch();

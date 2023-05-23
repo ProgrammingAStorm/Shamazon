@@ -1,4 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { IOrder } from "./orderSlice";
+import { IProduct } from "./productSlice";
+import { IReview } from "./reviewSlice"
+
+export interface IShopperState {
+    shopper: IShopper;
+    token: string;
+}
+
+export interface IShopper {
+    id: string;
+    email?: string;
+    firstName: string;
+    lastName: string;
+    interests?: string[];
+    reviews: IReview[];
+    orders: IOrder[];
+    cart: IProduct;
+}
 
 const initialState = {
     shopper: null,
@@ -26,7 +45,7 @@ export const shopperSlice = createSlice({
         getToken: state => {
             const token = JSON.parse(localStorage.getItem('shopperToken')!);
 
-            if(token === null || token === undefined || token === '') {
+            if (token === null || token === undefined || token === '') {
                 state.token = null;
                 return;
             }
@@ -35,6 +54,12 @@ export const shopperSlice = createSlice({
         },
     }
 });
+
+
+
+// export const {
+//     shopperSelector: 
+// };
 
 export const { logIn, logOut, getToken } = shopperSlice.actions;
 
