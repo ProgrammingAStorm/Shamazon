@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 //Redux imports
 import { logOut, logIn, shopperSelector, IShopper } from "@/src/redux/slices/shopperSlice";
 import { toggleShopper, userSelector } from "@/src/redux/slices/userSlice";
+import { sellerLogIn, ISeller } from "@/src/redux/slices/sellerSlice";
 
 //Util imports
 import jwtDecode from "jwt-decode";
@@ -19,13 +20,8 @@ export default function Header() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const token = localStorage.getItem('shopperToken');
-
-        if (token) {
-            const payload = jwtDecode<IShopper>(token);
-
-            dispatch(logIn({shopper: payload, token}))
-        }
+        handleSellerLogin();
+        handleShopperLogin()
     }, []);
 
     return <header>
@@ -77,5 +73,25 @@ export default function Header() {
 
     function handleUserSwitch() {
         dispatch(toggleShopper());
+    }
+
+    function handleShopperLogin() {
+        const token = localStorage.getItem('shopperToken');
+
+        if (token) {
+            const payload = jwtDecode<IShopper>(token);
+
+            dispatch(logIn({ shopper: payload, token }))
+        }
+    }
+
+    function handleSellerLogin() {
+        const token = localStorage.getItem('sellerToken');
+
+        if (token) {
+            const payload = jwtDecode<ISeller>(token);
+
+            dispatch(sellerLogIn({ seller: payload, token }))
+        }
     }
 }
