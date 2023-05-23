@@ -3,15 +3,24 @@
 // React imports
 import { ChangeEvent, FormEvent, useState } from "react"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+//Redux imports
+import { useDispatch } from "react-redux";
 
 //Util imports
 import { validateEmail, validatePassword } from "@/src/validation";
 import { handleLogin } from "./actions";
+import { sellerLogIn } from "@/src/redux/slices/sellerSlice";
 
 export default function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [messages, setMessages] = useState({ password: '', email: '' });
+
+    const dispatch = useDispatch()
+
+    const router = useRouter()
 
     return <main>
         <form onSubmit={handleSubmit}>
@@ -61,7 +70,8 @@ export default function LogIn() {
 
         switch (data.status) {
             case 202:
-                console.log(data)
+                dispatch(sellerLogIn({seller: data.payload, token: data.token}));
+                router.push('/seller')
                 break;
             case 409:
                 setMessages({ ...messages, email: data.token });
