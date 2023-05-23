@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 //Redux imports
 import { logOut, logIn, shopperSelector, IShopper } from "@/src/redux/slices/shopperSlice";
 import { setShopperTrue, toggleShopper, userSelector } from "@/src/redux/slices/userSlice";
-import { sellerLogIn, ISeller, sellerSelector } from "@/src/redux/slices/sellerSlice";
+import { sellerLogIn, ISeller, sellerSelector, sellerLogOut } from "@/src/redux/slices/sellerSlice";
 
 //Util imports
 import jwtDecode from "jwt-decode";
@@ -50,7 +50,7 @@ export default function Header() {
                 <>
                     {seller.seller && (
                         <>
-                            <Link href="/seller">
+                            <Link href="/seller" onClick={handleSellerLogout}>
                                 Seller Logout
                             </Link>
 
@@ -74,6 +74,10 @@ export default function Header() {
 
     function handleShopperLogout() {
         dispatch(logOut());
+    }
+
+    function handleSellerLogout() {
+        dispatch(sellerLogOut())
     }
 
     function handleUserSwitch() {
