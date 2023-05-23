@@ -1,19 +1,20 @@
 'use client'
 
 //React imports
-import { logOut } from "@/src/redux/slices/shopperSlice";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+//Redux imports
+import { logOut, logIn, shopperSelector } from "@/src/redux/slices/shopperSlice";
+import { toggleShopper, userSelector } from "@/src/redux/slices/userSlice";
+
 //Util imports
-import { logIn } from "@/src/redux/slices/shopperSlice";
 import jwtDecode from "jwt-decode";
-import { toggleShopper } from "@/src/redux/slices/userSlice";
 
 export default function Header() {
-    const shopper = useSelector();
-    const user = useSelector(state => state.user);
+    const shopper = useSelector(shopperSelector);
+    const user = useSelector(userSelector);
 
     const dispatch = useDispatch();
 

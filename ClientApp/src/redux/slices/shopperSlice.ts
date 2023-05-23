@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 import { IOrder } from "./orderSlice";
 import { IProduct } from "./productSlice";
 import { IReview } from "./reviewSlice"
@@ -55,11 +56,11 @@ export const shopperSlice = createSlice({
     }
 });
 
+const shopperSelector = (state: RootState) => state.shopper
 
-
-// export const {
-//     shopperSelector: 
-// };
+export {
+    shopperSelector 
+};
 
 export const { logIn, logOut, getToken } = shopperSlice.actions;
 

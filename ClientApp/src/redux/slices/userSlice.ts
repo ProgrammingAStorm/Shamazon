@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
-const initialState = {
+export interface IUserState {
+    isShopper: boolean;
+}
+
+const initialState: IUserState = {
     isShopper: true
 }
 
@@ -13,6 +18,12 @@ export const userSlice = createSlice({
         },
     }
 });
+
+const userSelector = (state: RootState) => state.user;
+
+export {
+    userSelector
+}
 
 export const {toggleShopper} = userSlice.actions;
 
