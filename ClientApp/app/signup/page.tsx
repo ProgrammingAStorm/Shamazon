@@ -73,8 +73,6 @@ export default function Signup() {
     </main>;
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-
         event.preventDefault();
 
         if (!validateEmail(email) || !validatePassword(password)) return;
@@ -89,10 +87,6 @@ export default function Signup() {
         clearForm();
 
         const data = await handleSignup(formData);
-
-        debugger
-
-        console.log(data.status)
 
         switch (data.status) {
             case 202:
