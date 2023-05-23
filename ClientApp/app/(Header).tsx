@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 //Redux imports
-import { logOut, logIn, shopperSelector } from "@/src/redux/slices/shopperSlice";
+import { logOut, logIn, shopperSelector, IShopper } from "@/src/redux/slices/shopperSlice";
 import { toggleShopper, userSelector } from "@/src/redux/slices/userSlice";
 
 //Util imports
@@ -22,7 +22,7 @@ export default function Header() {
         const token = localStorage.getItem('shopperToken');
 
         if (token) {
-            const payload = jwtDecode(token);
+            const payload = jwtDecode<IShopper>(token);
 
             dispatch(logIn({shopper: payload, token}))
         }

@@ -56,12 +56,12 @@ export const shopperSlice = createSlice({
     }
 });
 
+export const { logIn, logOut, getToken } = shopperSlice.actions;
+
+export default shopperSlice.reducer;
+
 const shopperSelector = (state: RootState) => state.shopper
 
 export {
     shopperSelector 
 };
-
-export const { logIn, logOut, getToken } = shopperSlice.actions;
-
-export default shopperSlice.reducer;
