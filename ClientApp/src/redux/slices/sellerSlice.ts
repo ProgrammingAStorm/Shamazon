@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { IOrder } from "./orderSlice";
 import { IProduct } from "./productSlice";
-import { IReview } from "./reviewSlice"
 
 export interface ISellerState {
     seller: ISeller | null;
@@ -12,12 +11,9 @@ export interface ISellerState {
 export interface ISeller {
     id: string;
     email: string | null;
-    firstName: string;
-    lastName: string;
-    interests: string[] | null;
-    reviews: IReview[];
+    name: string;
     orders: IOrder[];
-    cart: IProduct;
+    products: IProduct[]
 }
 
 const initialState: ISellerState = {
