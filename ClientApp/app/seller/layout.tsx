@@ -12,7 +12,6 @@ export default function SellerLayout({children}: {children: ReactNode}) {
     const router = useRouter()
 
     useEffect(() => {
-        console.log(seller.seller)
         if(!seller.seller) {
             router.push('/seller/login')
         }
