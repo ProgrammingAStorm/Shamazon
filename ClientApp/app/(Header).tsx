@@ -75,7 +75,7 @@ export default function Header() {
         dispatch(toggleShopper());
     }
 
-    function handleShopperLogin() {
+    async function handleShopperLogin() {
         const token = localStorage.getItem('shopperToken');
 
         if (token) {
@@ -85,7 +85,7 @@ export default function Header() {
         }
     }
 
-    function handleSellerLogin() {
+    async function handleSellerLogin() {
         const token = localStorage.getItem('sellerToken');
 
         if (token) {
