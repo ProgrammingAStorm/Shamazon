@@ -7,11 +7,15 @@ import Link from "next/link";
 //Util imports
 import { validateEmail, validatePassword } from "../../src/validation";
 import { handleLogin } from "./actions";
+import { useDispatch } from "react-redux";
+import { logIn } from "@/src/redux/slices/shopperSlice";
 
 export default function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [messages, setMessages] = useState({ password: '', email: '' });
+
+    const dispatch = useDispatch()
 
     return <main>
         <form onSubmit={handleSubmit}>
@@ -62,10 +66,11 @@ export default function LogIn() {
         switch (data.status) {
             case 202:
                 console.log(data)
+                dispatch(logIn({shopper: data.payload, token: data.token}))
                 break;
             case 409:
+                clearForm();
                 setMessages({ ...messages, email: data.token });
-                clearForm()
                 break;
             default:
                 console.log(data);

@@ -18,6 +18,7 @@ export const shopperSlice = createSlice({
 
             state.shopper = shopper;
             state.token = token;
+            state.isLoggedIn = true;
 
             localStorage.setItem('shopperToken', JSON.stringify(shopper));
         },
@@ -38,7 +39,7 @@ export const shopperSlice = createSlice({
 
             state.token = token;
             toggleLoggedIn();
-        }
+        },
     }
 });
 
