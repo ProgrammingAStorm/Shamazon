@@ -8,7 +8,7 @@ const SIGNUP_MUTATION = gql`
         $email: String!
         $password: String!
         $firstName: String!
-        $lastName: String!
+        $lastName: String
     ) {
         shoppers {
             signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName) {

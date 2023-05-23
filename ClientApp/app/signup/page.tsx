@@ -1,41 +1,40 @@
 'use client'
 
+import { logIn } from "@/src/redux/slices/shopperSlice";
+import { useRouter } from "next/navigation";
 // React imports
-import { FormEvent, useState, useContext, useEffect } from "react"
-import Link from "next/link";
+import { FormEvent, useState, ChangeEvent } from "react"
+
+// Redux imports
+import { useDispatch } from "react-redux";
 
 //Util imports
-//import { ShopperContext } from "../../../temp_files/src/utils/context";
 import { validateEmail, validatePassword } from "../../src/validation";
+import { handleSignup } from "./actions";
 
 export default function Signup() {
     // Form input state
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
 
     // Form message state
-    const [message, setMessage] = useState('');
+    const [messages, setMessages] = useState({ password: '', email: '' });
 
-    // Navigator
-    //const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    //const [shopper, setShopper] = useContext(ShopperContext);
-
-    // useEffect(() => {
-    //     if (shopper.token !== '') navigate('/')
-    // }, []);
+    const router = useRouter();
 
     return <main>
-        <form onSubmit={event => handleLogin(event)}>
+        <form onSubmit={handleSubmit}>
             <input
                 type="email"
                 placeholder="Email"
                 className="border-cyan-900 border m-1"
                 value={email}
                 required
-                onChange={event => setEmail(event.target.value)}
+                onChange={handleEmail}
             ></input>
             <input
                 type="password"
@@ -43,7 +42,7 @@ export default function Signup() {
                 className="border-cyan-900 border m-1"
                 value={password}
                 required
-                onChange={event => setPassword(event.target.value)}
+                onChange={handlePassword}
             ></input>
             <input
                 type="text"
@@ -64,58 +63,82 @@ export default function Signup() {
 
             <button type="submit" className="border-cyan-900 border m-1 p-1">Submit</button>
 
-            {message != '' ? <p>{message}</p> : <p></p>}
+            {messages.email != '' || messages.password != ''
+                ? <div>
+                    <p>{messages.email}</p>
+                    <p>{messages.password}</p>
+                </div>
+                : <p></p>}
         </form>
     </main>;
 
-    async function handleLogin(event: FormEvent) {
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
 
-        if (!validateEmail(email)) {
-            clearForm();
-            return setMessage("Email is not valid.");
-        }
+        event.preventDefault();
 
-        if (!validatePassword(password)) {
-            clearForm();
-            return setMessage("Password is not valid.");
-        }
+        if (!validateEmail(email) || !validatePassword(password)) return;
+
+        const formData = new FormData();
+
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
+        formData.append('email', email);
+        formData.append('password', password)
 
         clearForm();
 
-        console.log(email, password, firstName, lastName)        
+        const data = await handleSignup(formData);
 
-        // const request = await fetch(`/api/shoppers/signup`, {
-        //     method: "POST",
-        //     headers: {
-        //         "content-type": "application/json; charset=utf-8"
-        //     },
-        //     body: JSON.stringify({
-        //         FirstName: firstName,
-        //         LastName: lastName,
-        //         Email: email,
-        //         Password: password
-        //     })
-        // });
-        // const response = await request.json();
+        debugger
 
-        // switch (request.status) {
-        //     case 409:
-        //         setMessage(response.message);
+        console.log(data.status)
 
-        //         break;
-        //     case 202:
-        //         localStorage.setItem('token', response.token)
+        switch (data.status) {
+            case 202:
+                dispatch(logIn({shopper: data.payload, token: data.token}));
+                router.push('/')
+                break;
+            case 409:
+                clearForm();
+                setMessages({ ...messages, email: data.token });
+                break;
+            default:
+                console.log(data);
+                clearForm()
+        }
+    }
 
-        //         setShopper({ token: response.token })
+    function handleEmail(e: ChangeEvent<HTMLInputElement>) {
+        const targetEmail = e.target.value;
 
-        //         navigate('/')
+        setEmail(targetEmail);
 
-        //         break;
-        //     default:
-        //         console.log("status", request.status)
-        //         console.log(response)
-        // }
+        if (targetEmail === '') {
+            return setMessages({ ...messages, email: '' })
+        }
+
+        if (!validateEmail(targetEmail)) {
+            setMessages({ ...messages, email: 'Email format is incorrect.' })
+        } else {
+            setMessages({ ...messages, email: '' })
+        }
+    }
+
+    function handlePassword(e: ChangeEvent<HTMLInputElement>) {
+        const targetPassword = e.target.value;
+
+        setPassword(targetPassword);
+
+        if (targetPassword === '') {
+            return setMessages({ ...messages, password: '' })
+        }
+
+        if (!validatePassword(targetPassword)) {
+            setMessages({ ...messages, password: 'Password format is incorrect.' })
+        } else {
+            setMessages({ ...messages, password: '' })
+        }
     }
 
     function clearForm() {
@@ -123,6 +146,6 @@ export default function Signup() {
         setPassword('');
         setFirstName('');
         setLastName('');
-        setMessage('');
+        setMessages({ email: '', password: '' });
     }
 }
