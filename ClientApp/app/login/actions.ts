@@ -17,9 +17,15 @@ const LOGIN_MUTATION = gql`
                     firstName
                     lastName
                     interests
-                    reviews 
-                    orders
-                    cart
+                    reviews {
+                        __typename
+                    }
+                    orders {
+                        __typename
+                    }
+                    cart {
+                        __typename
+                    }
                 }
             }
         }
