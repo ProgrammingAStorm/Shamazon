@@ -1,12 +1,12 @@
 'use client'
 
-import { sellerLogIn } from "@/src/redux/slices/sellerSlice";
-import { useRouter } from "next/navigation";
 // React imports
-import { FormEvent, useState, ChangeEvent } from "react"
+import { FormEvent, useState, ChangeEvent, useEffect } from "react"
+import { useRouter } from "next/navigation";
 
 // Redux imports
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { sellerLogIn, sellerSelector } from "@/src/redux/slices/sellerSlice";
 
 //Util imports
 import { validateEmail, validatePassword } from "../../../src/validation";
@@ -24,6 +24,14 @@ export default function Signup() {
     const dispatch = useDispatch();
 
     const router = useRouter();
+
+    const seller = useSelector(sellerSelector)
+
+    useEffect(() => {
+        if(seller.seller) {
+            router.push('/seller');
+        }
+    }, [])
 
     return <main>
         <form onSubmit={handleSubmit}>
