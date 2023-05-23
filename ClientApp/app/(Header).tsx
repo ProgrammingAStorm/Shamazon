@@ -1,15 +1,32 @@
+'use client'
+
 //React imports
 import { logOut } from "@/src/redux/slices/shopperSlice";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 //Util imports
+import { logIn } from "@/src/redux/slices/shopperSlice";
+import jwtDecode from "jwt-decode";
 
 export default function Header() {
-    const shopper = useSelector(state => state.shopper)
-    const user = useSelector(state => state.user)
+    const shopper = useSelector(state => state.shopper);
+    const user = useSelector(state => state.user);
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const token = localStorage.getItem('shopperToken');
+
+        if (token) {
+            const payload = jwtDecode(token);
+
+            console.log(payload)
+
+            dispatch(logIn({shopper: payload, token}))
+        }
+    }, []);
 
     return <header>
         <Link href="/" >Shamazon</Link>
