@@ -1,25 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IOrder } from "./orderSlice";
 import { IProduct } from "./productSlice";
 import { IReview } from "./reviewSlice"
 
 export interface IShopperState {
-    shopper: IShopper;
-    token: string;
+    shopper: IShopper | null;
+    token: string | null;
 }
 
 export interface IShopper {
     id: string;
-    email?: string;
+    email: string | null;
     firstName: string;
     lastName: string;
-    interests?: string[];
+    interests: string[] | null;
     reviews: IReview[];
     orders: IOrder[];
     cart: IProduct;
 }
 
-const initialState = {
+const initialState: IShopperState = {
     shopper: null,
     token: null
 }
@@ -28,7 +28,7 @@ export const shopperSlice = createSlice({
     name: 'shopper',
     initialState,
     reducers: {
-        logIn: (state, action) => {
+        logIn: (state, action: PayloadAction<IShopperState>) => {
             const { shopper, token } = action.payload;
 
             state.shopper = shopper;
