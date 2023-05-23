@@ -77,21 +77,21 @@ public class ShoppersController : GraphController
         if (!Validation.ValidateEmailFormat(newShopper.Email)) return new IGraphShopper()
         {
             Token = "Email format is incorrect",
-            Status = 202,
+            Status = 409,
             Payload = null!
         };
 
         if (Validation.ValidatePasswordFormat(newShopper.Password)) return new IGraphShopper()
         {
             Token = "Password format is incorrect",
-            Status = 202,
+            Status = 409,
             Payload = null!
         };
 
         if (await _shoppersService.IsEmailInUse(newShopper.Email)) return new IGraphShopper()
         {
             Token = "Email is already in use.",
-            Status = 202,
+            Status = 409,
             Payload = null!
         };
 
