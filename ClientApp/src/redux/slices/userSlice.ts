@@ -18,6 +18,9 @@ export const userSlice = createSlice({
         },
         setShopperTrue: state => {
             state.isShopper = true;
+        },
+        setShopperFalse: state => {
+            state.isShopper = false;
         }
     }
 });
@@ -28,6 +31,6 @@ export {
     userSelector
 }
 
-export const { toggleShopper, setShopperTrue } = userSlice.actions;
+export const { toggleShopper, setShopperTrue, setShopperFalse } = userSlice.actions;
 
 export default userSlice.reducer;

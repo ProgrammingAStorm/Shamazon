@@ -42,7 +42,7 @@ export const sellerSlice = createSlice({
     }
 });
 
-export const { sellerLogIn, sellerLogOut} = sellerSlice.actions;
+export const { sellerLogIn, sellerLogOut } = sellerSlice.actions;
 
 export default sellerSlice.reducer;
 
