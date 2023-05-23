@@ -1,12 +1,15 @@
 //React imports
+import { logOut } from "@/src/redux/slices/shopperSlice";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 //Util imports
 
 export default function Header() {
     const shopper = useSelector(state => state.shopper)
     const user = useSelector(state => state.user)
+
+    const dispatch = useDispatch()
 
     return <header>
         <Link href="/" >Shamazon</Link>
@@ -52,6 +55,6 @@ export default function Header() {
     </header>;
 
     function handleShopperLogout() {
-
+        dispatch(logOut())
     }
 }
