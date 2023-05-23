@@ -2,23 +2,27 @@
 
 // React imports
 import { ChangeEvent, FormEvent, useState } from "react"
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+
+// Redux imports
+import { useDispatch } from "react-redux";
+import { logIn } from "@/src/redux/slices/shopperSlice";
+
+// Action imports
+import { handleLogin } from "./actions";
 
 //Util imports
 import { validateEmail, validatePassword } from "../../src/validation";
-import { handleLogin } from "./actions";
-import { useDispatch } from "react-redux";
-import { logIn } from "@/src/redux/slices/shopperSlice";
-import { useRouter } from "next/router";
 
 export default function LogIn() {
+    const router = useRouter();
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [messages, setMessages] = useState({ password: '', email: '' });
 
     const dispatch = useDispatch();
-
-    const router = useRouter();
 
     return <main>
         <form onSubmit={handleSubmit}>
