@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 //Redux imports
 import { logOut, logIn, shopperSelector, IShopper } from "@/src/redux/slices/shopperSlice";
-import { toggleShopper, userSelector } from "@/src/redux/slices/userSlice";
+import { setShopperTrue, toggleShopper, userSelector } from "@/src/redux/slices/userSlice";
 import { sellerLogIn, ISeller } from "@/src/redux/slices/sellerSlice";
 
 //Util imports
@@ -25,7 +25,7 @@ export default function Header() {
     }, []);
 
     return <header>
-        <Link href="/" >Shamazon</Link>
+        <Link href="/" onClick={handleHomeNavigation}>Shamazon</Link>
 
         {user.isShopper
             ? (
@@ -93,5 +93,9 @@ export default function Header() {
 
             dispatch(sellerLogIn({ seller: payload, token }))
         }
+    }
+
+    function handleHomeNavigation() {
+        dispatch(setShopperTrue())
     }
 }
