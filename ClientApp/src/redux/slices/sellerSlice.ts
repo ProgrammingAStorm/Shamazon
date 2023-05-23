@@ -42,21 +42,11 @@ export const sellerSlice = createSlice({
             state.token = null;
 
             localStorage.setItem('sellerToken', '');
-        },
-        sellerGetToken: state => {
-            const token = JSON.parse(localStorage.getItem('sellerToken')!);
-
-            if (token === null || token === undefined || token === '') {
-                state.token = null;
-                return;
-            }
-
-            state.token = token;
-        },
+        }
     }
 });
 
-export const { sellerLogIn, sellerLogOut, sellerGetToken } = sellerSlice.actions;
+export const { sellerLogIn, sellerLogOut} = sellerSlice.actions;
 
 export default sellerSlice.reducer;
 

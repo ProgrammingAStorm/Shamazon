@@ -42,21 +42,11 @@ export const shopperSlice = createSlice({
             state.token = null;
 
             localStorage.setItem('shopperToken', '');
-        },
-        getToken: state => {
-            const token = JSON.parse(localStorage.getItem('shopperToken')!);
-
-            if (token === null || token === undefined || token === '') {
-                state.token = null;
-                return;
-            }
-
-            state.token = token;
-        },
+        }
     }
 });
 
-export const { logIn, logOut, getToken } = shopperSlice.actions;
+export const { logIn, logOut } = shopperSlice.actions;
 
 export default shopperSlice.reducer;
 
