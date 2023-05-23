@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 export interface IUserState {
@@ -16,6 +16,9 @@ export const userSlice = createSlice({
         toggleShopper: state => {
             state.isShopper = !state.isShopper;
         },
+        setShopperTrue: state => {
+            state.isShopper = true;
+        }
     }
 });
 
@@ -25,6 +28,6 @@ export {
     userSelector
 }
 
-export const {toggleShopper} = userSlice.actions;
+export const { toggleShopper, setShopperTrue } = userSlice.actions;
 
 export default userSlice.reducer;
