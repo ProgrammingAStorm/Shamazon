@@ -20,7 +20,7 @@ export const shopperSlice = createSlice({
             state.token = token;
             state.isLoggedIn = true;
 
-            localStorage.setItem('shopperToken', JSON.stringify(shopper));
+            localStorage.setItem('shopperToken', JSON.stringify(token));
         },
         logOut: state => {
             state.shopper = null;
