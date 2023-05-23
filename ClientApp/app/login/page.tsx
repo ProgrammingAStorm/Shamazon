@@ -1,13 +1,13 @@
 'use client'
 
 // React imports
-import { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useState, useEffect } from "react"
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 // Redux imports
-import { useDispatch } from "react-redux";
-import { logIn } from "@/src/redux/slices/shopperSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn, shopperSelector } from "@/src/redux/slices/shopperSlice";
 
 // Action imports
 import { handleLogin } from "./actions";
@@ -23,6 +23,14 @@ export default function LogIn() {
     const [messages, setMessages] = useState({ password: '', email: '' });
 
     const dispatch = useDispatch();
+
+    const shopper = useSelector(shopperSelector);
+
+    useEffect(() => {
+        if(shopper.shopper) {
+            router.push('/');
+        }
+    }, [])
 
     return <main>
         <form onSubmit={handleSubmit}>
