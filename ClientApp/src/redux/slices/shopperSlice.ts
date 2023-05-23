@@ -10,14 +10,14 @@ export interface IShopperState {
 }
 
 export interface IShopper {
-    id: string;
-    email: string | null;
-    firstName: string;
-    lastName: string;
-    interests: string[] | null;
-    reviews: IReview[];
-    orders: IOrder[];
-    cart: IProduct;
+    Id: string;
+    Email: string | null;
+    FirstName: string;
+    LastName: string;
+    Interests: string[] | null;
+    Reviews: IReview[];
+    Orders: IOrder[];
+    Cart: IProduct;
 }
 
 const initialState: IShopperState = {
