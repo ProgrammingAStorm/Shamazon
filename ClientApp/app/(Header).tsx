@@ -23,8 +23,6 @@ export default function Header() {
         if (token) {
             const payload = jwtDecode(token);
 
-            console.log(payload)
-
             dispatch(logIn({shopper: payload, token}))
         }
     }, []);
@@ -35,7 +33,7 @@ export default function Header() {
         {user.isShopper
             ? (
                 <>
-                    {!shopper.isLoggedIn
+                    {!shopper.shopper
                         ?
                         <Link href="/login">
                             Log in
