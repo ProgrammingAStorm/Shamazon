@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 //Util imports
 import { logIn } from "@/src/redux/slices/shopperSlice";
 import jwtDecode from "jwt-decode";
+import { toggleShopper } from "@/src/redux/slices/userSlice";
 
 export default function Header() {
     const shopper = useSelector(state => state.shopper);
@@ -44,7 +45,7 @@ export default function Header() {
                             Log out
                         </Link>}
 
-                    <Link href="/seller/login">
+                    <Link href="/seller/login" onClick={handleUserSwitch}>
                         To Seller Login
                     </Link>
                 </>
@@ -63,7 +64,7 @@ export default function Header() {
                         To Seller Upload
                     </Link>
 
-                    <Link href="/">
+                    <Link href="/" onClick={handleUserSwitch}>
                         To Shopper Page
                     </Link>
                 </>
@@ -72,6 +73,10 @@ export default function Header() {
     </header>;
 
     function handleShopperLogout() {
-        dispatch(logOut())
+        dispatch(logOut());
+    }
+
+    function handleUserSwitch() {
+        dispatch(toggleShopper());
     }
 }
