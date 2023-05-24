@@ -9,9 +9,10 @@ const UPLOAD_MUTATION = gql`
         $description: String!
         $price: Float!
         $images: [String!]!
+        $id: String!
     ) {
         products {
-            upload(name: $name, description: $description, price: $price, images: $images) {
+            upload(name: $name, description: $description, price: $price, images: $images, id: $id) {
                 token
                 status
                 payload {
@@ -22,14 +23,14 @@ const UPLOAD_MUTATION = gql`
     }
 `;
 
-export async function handleUpload(name: string, description: string, price: number, ID: string, images: string[]) {
+export async function handleUpload(name: string, description: string, price: number, id: string, images: string[]) {
     const mutation = await client.mutate({
         mutation: UPLOAD_MUTATION,
         variables: {
             name,
             description,
             price,
-            ID,
+            id,
             images
         }
     });
