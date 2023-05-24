@@ -9,7 +9,7 @@ namespace Shamazon.Controllers;
 public class ProductsController : GraphController
 {
     [Mutation("Upload")]
-    public async Task<IGraphProduct> Upload(string Name, string Description, float Price, List<string> images)
+    public async Task<IGraphProduct> Upload(string Name, string Description, float Price, List<string> images, string Id)
     {
         // TODO enforce validation so that no products with duplicated names are generated
         // TODO enforce validation so that base64 strings are actually base64 strings
