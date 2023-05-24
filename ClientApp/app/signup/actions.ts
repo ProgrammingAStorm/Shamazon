@@ -3,13 +3,15 @@
 import { gql } from "@apollo/client";
 import client from "@/src/apollo";
 
-const LOGIN_MUTATION = gql`
-    mutation login(
+const SIGNUP_MUTATION = gql`
+    mutation signup(
         $email: String!
         $password: String!
+        $firstName: String!
+        $lastName: String
     ) {
         shoppers {
-            login(email: $email, password: $password) {
+            signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName) {
                 token
                 status
                 payload {
@@ -32,18 +34,21 @@ const LOGIN_MUTATION = gql`
     }
 `;
 
-export async function handleLogin(formData: FormData) {
+export async function handleSignup(formData: FormData) {
     const email = formData.get('email');
     const password = formData.get('password');
+    const firstName = formData.get('firstName');
+    const lastName = formData.get('lastName')
 
     const mutation = await client.mutate({
-        mutation: LOGIN_MUTATION,
+        mutation: SIGNUP_MUTATION,
         variables: {
             email,
-            password
+            password,
+            firstName,
+            lastName
         }
     });
 
-    return mutation.data.shoppers.login
+    return mutation.data.shoppers.signup
 }
-

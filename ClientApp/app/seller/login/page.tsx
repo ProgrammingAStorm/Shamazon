@@ -1,8 +1,13 @@
 'use client'
 
 // React imports
-import { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+//Redux imports
+import { useDispatch, useSelector } from "react-redux";
+import { sellerLogIn, sellerSelector } from "@/src/redux/slices/sellerSlice";
 
 //Util imports
 import { validateEmail, validatePassword } from "@/src/validation";
@@ -12,6 +17,18 @@ export default function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [messages, setMessages] = useState({ password: '', email: '' });
+
+    const dispatch = useDispatch()
+
+    const router = useRouter()
+
+    const seller = useSelector(sellerSelector)
+
+    useEffect(() => {
+        if(seller.seller) {
+            router.push('/seller');
+        }
+    }, [])
 
     return <main>
         <form onSubmit={handleSubmit}>
@@ -61,7 +78,8 @@ export default function LogIn() {
 
         switch (data.status) {
             case 202:
-                console.log(data)
+                dispatch(sellerLogIn({seller: data.payload, token: data.token}));
+                router.push('/seller')
                 break;
             case 409:
                 setMessages({ ...messages, email: data.token });

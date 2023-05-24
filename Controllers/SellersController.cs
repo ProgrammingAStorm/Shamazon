@@ -72,35 +72,37 @@ public class SellersController : GraphController
     }
 
     [Mutation("Signup")]
-    public async Task<IGraphSeller> Signup(Seller newSeller)
+    public async Task<IGraphSeller> Signup(string Email, string Password, string Name)
     {
-        if (!Validation.ValidateEmailFormat(newSeller.Email)) return new IGraphSeller()
+        if (!Validation.ValidateEmailFormat(Email)) return new IGraphSeller()
         {
             Payload = null!,
             Status = 409,
             Token = "Email format is incorrect"
         };
 
-        if (Validation.ValidatePasswordFormat(newSeller.Password)) return new IGraphSeller()
+        if (Validation.ValidatePasswordFormat(Password)) return new IGraphSeller()
         {
             Payload = null!,
             Status = 409,
             Token = "Password format is incorrect"
         };
 
-        if (await _sellersService.IsEmailInUse(newSeller.Email)) return new IGraphSeller()
+        if (await _sellersService.IsEmailInUse(Email)) return new IGraphSeller()
         {
             Payload = null!,
             Status = 409,
             Token = "Email is already in use."
         };
 
-        if (await _sellersService.IsNameInUse(newSeller.Name)) return new IGraphSeller()
+        if (await _sellersService.IsNameInUse(Name)) return new IGraphSeller()
         {
             Payload = null!,
             Status = 409,
             Token = "Name is already in use."
         };
+
+        var newSeller = new Seller(Name, Email, Password);
 
         newSeller.Password = Hash.HashPassword(newSeller.Password);
         await _sellersService.CreateAsync(newSeller);

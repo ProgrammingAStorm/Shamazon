@@ -72,28 +72,35 @@ public class ShoppersController : GraphController
     }
 
     [Mutation("Signup")]
-    public async Task<IGraphShopper> Signup(Shopper newShopper)
+    public async Task<IGraphShopper> Signup(string Email, string Password, string FirstName, string LastName)
     {
-        if (!Validation.ValidateEmailFormat(newShopper.Email)) return new IGraphShopper()
+        if (!Validation.ValidateEmailFormat(Email)) return new IGraphShopper()
         {
             Token = "Email format is incorrect",
-            Status = 202,
+            Status = 409,
             Payload = null!
         };
 
-        if (Validation.ValidatePasswordFormat(newShopper.Password)) return new IGraphShopper()
+        if (Validation.ValidatePasswordFormat(Password)) return new IGraphShopper()
         {
             Token = "Password format is incorrect",
-            Status = 202,
+            Status = 409,
             Payload = null!
         };
 
-        if (await _shoppersService.IsEmailInUse(newShopper.Email)) return new IGraphShopper()
+        if (await _shoppersService.IsEmailInUse(Email)) return new IGraphShopper()
         {
             Token = "Email is already in use.",
-            Status = 202,
+            Status = 409,
             Payload = null!
         };
+
+        var newShopper = new Shopper(
+            Email,
+            Hash.HashPassword(Password),
+            FirstName,
+            LastName
+        );
 
         await _shoppersService.CreateAsync(newShopper);
 

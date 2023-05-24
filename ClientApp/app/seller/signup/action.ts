@@ -1,29 +1,25 @@
-'use server';
+'use server'
 
 import { gql } from "@apollo/client";
 import client from "@/src/apollo";
 
-const LOGIN_MUTATION = gql`
-    mutation login(
+const SIGNUP_MUTATION = gql`
+    mutation signup(
         $email: String!
         $password: String!
+        $name: String!
     ) {
-        shoppers {
-            login(email: $email, password: $password) {
+        sellers {
+            signup(email: $email, password: $password, name: $name) {
                 token
                 status
                 payload {
                     id
-                    firstName
-                    lastName
-                    interests
-                    reviews {
+                    name
+                    products {
                         __typename
                     }
                     orders {
-                        __typename
-                    }
-                    cart {
                         __typename
                     }
                 }
@@ -32,18 +28,19 @@ const LOGIN_MUTATION = gql`
     }
 `;
 
-export async function handleLogin(formData: FormData) {
+export async function handleSignup(formData: FormData) {
     const email = formData.get('email');
     const password = formData.get('password');
+    const name = formData.get('name');
 
     const mutation = await client.mutate({
-        mutation: LOGIN_MUTATION,
+        mutation: SIGNUP_MUTATION,
         variables: {
             email,
-            password
+            password,
+            name
         }
     });
 
-    return mutation.data.shoppers.login
+    return mutation.data.sellers.signup
 }
-

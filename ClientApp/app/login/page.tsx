@@ -1,17 +1,36 @@
 'use client'
 
 // React imports
-import { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useState, useEffect } from "react"
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+
+// Redux imports
+import { useDispatch, useSelector } from "react-redux";
+import { logIn, shopperSelector } from "@/src/redux/slices/shopperSlice";
+
+// Action imports
+import { handleLogin } from "./actions";
 
 //Util imports
 import { validateEmail, validatePassword } from "../../src/validation";
-import { handleLogin } from "./actions";
 
 export default function LogIn() {
+    const router = useRouter();
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [messages, setMessages] = useState({ password: '', email: '' });
+
+    const dispatch = useDispatch();
+
+    const shopper = useSelector(shopperSelector);
+
+    useEffect(() => {
+        if(shopper.shopper) {
+            router.push('/');
+        }
+    }, [])
 
     return <main>
         <form onSubmit={handleSubmit}>
@@ -61,11 +80,12 @@ export default function LogIn() {
 
         switch (data.status) {
             case 202:
-                console.log(data)
+                dispatch(logIn({shopper: data.payload, token: data.token}));
+                router.push('/')
                 break;
             case 409:
+                clearForm();
                 setMessages({ ...messages, email: data.token });
-                clearForm()
                 break;
             default:
                 console.log(data);
