@@ -71,12 +71,20 @@ export default function Upload() {
             fileStrings.push(base64String!.toString());
         }
 
-        const data = await handleUpload(name, description, Number.parseFloat(price), 'id', fileStrings)
+        let data;
+
+        try {
+            data = await handleUpload(name, description, Number.parseFloat(price), 'id', fileStrings)
+            console.log(data)
+        } catch (error) {
+            clearFileInput()
+            setMessage("Images are too large. Please try less or smaller images.")
+            return;
+        }
 
         // TODO handle different response codes
         
-        console.log(data)
-
+        
         clearForm();
     }
 
