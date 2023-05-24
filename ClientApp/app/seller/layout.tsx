@@ -20,7 +20,7 @@ export default function SellerLayout({children}: {children: ReactNode}) {
         if(!seller.seller) {
             router.push('/seller/login')
         }
-    }, [])
+    }, [seller])
 
     return <>
         {children}
