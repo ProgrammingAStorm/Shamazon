@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.Core" Version="3.7.106.13" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.104.20" />
     <PackageReference Include="GraphQL.AspNet" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="7.0.3" />
     <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
