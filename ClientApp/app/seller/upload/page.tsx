@@ -2,6 +2,7 @@
 
 import { FormEvent, useRef, useState } from "react";
 import { fileToBase64, isFileAnImage } from "../../../src/file";
+import { handleUpload } from "./actions";
 
 export default function Upload() {
     const [name, setName] = useState('');
@@ -67,29 +68,14 @@ export default function Upload() {
 
         for (let x = 0; x < files!.length; x++) {
             const base64String = await fileToBase64(files?.item(x));
-            console.log(base64String!)
             fileStrings.push(base64String!.toString());
         }
 
-        // const request = await fetch("/api/products/upload", {
-        //     method: "POST",
-        //     headers: {
-        //         "content-type": "application/json; charset=utf-8"
-        //     },
-        //     body: JSON.stringify({
-        //         Name: name,
-        //         Description: description,
-        //         Price: price,
-        //         ImageUrls: fileStrings,
-        //         // TODO needs to get name of product seller from token
-        //         ProductSeller: "name"
-        //     })
-        // });
-        // const response = await request.json();
+        const data = await handleUpload(name, description, Number.parseFloat(price), 'id', fileStrings)
 
         // TODO handle different response codes
         
-        // console.log(response)
+        console.log(data)
 
         clearForm();
     }
