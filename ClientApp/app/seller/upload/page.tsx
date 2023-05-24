@@ -1,6 +1,8 @@
 'use client'
 
+import { sellerSelector } from "@/src/redux/slices/sellerSlice";
 import { FormEvent, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { fileToBase64, isFileAnImage } from "../../../src/file";
 import { handleUpload } from "./actions";
 
@@ -10,6 +12,8 @@ export default function Upload() {
     const [price, setPrice] = useState('');
     const [files, setFiles] = useState<FileList>();
     const [message, setMessage] = useState('');
+
+    const seller = useSelector(sellerSelector);
 
     return <main>
         <form onSubmit={handleSubmit}>
@@ -74,7 +78,7 @@ export default function Upload() {
         let data;
 
         try {
-            data = await handleUpload(name, description, Number.parseFloat(price), 'id', fileStrings)
+            data = await handleUpload(name, description, Number.parseFloat(price), seller.seller!.Id, fileStrings)
             console.log(data)
         } catch (error) {
             clearFileInput()
