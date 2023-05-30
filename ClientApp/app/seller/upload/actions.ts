@@ -7,12 +7,10 @@ const UPLOAD_MUTATION = gql`
     mutation upload(
         $name: String!
         $description: String!
-        $price: Float!
-        $images: [String!]!
-        $id: String!
+        $price: String!
     ) {
         products {
-            upload(name: $name, description: $description, price: $price, images: $images, id: $id) {
+            upload(name: $name, description: $description, price: $price) {
                 token
                 status
                 payload {
@@ -23,15 +21,17 @@ const UPLOAD_MUTATION = gql`
     }
 `;
 
-export async function handleUpload(name: string, description: string, price: number, id: string, images: string[]) {
+export async function handleUpload(formData: FormData) {
+    
+    // refactor to include base64 extraction of images on this end instead of the client
+
     const mutation = await client.mutate({
         mutation: UPLOAD_MUTATION,
         variables: {
-            name,
-            description,
-            price,
-            id,
-            images
+            name: formData.get('name'),
+            description: formData.get('description'),
+            price: formData.get('price'),
+            id: formData.get('id'),
         }
     });
 

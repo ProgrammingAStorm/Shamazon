@@ -10,12 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<ShamazonDatabaseSettings>(
     builder.Configuration.GetSection("ShamazonDatabase"));
 
+builder.Services.Configure<AmazonSettings>(
+    builder.Configuration.GetSection("AmazonSettings"));
+
 // Model Services
 builder.Services.AddSingleton<ShoppersService>();
 builder.Services.AddSingleton<SellersService>();
 
 // Util Services
 builder.Services.AddSingleton<TokenService>();
+builder.Services.AddSingleton<AmazonService>();
 
 // Add graphql services to the DI container
 builder.Services.AddGraphQL();

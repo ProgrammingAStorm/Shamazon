@@ -12,7 +12,7 @@ function fileToBase64(file: File | undefined | null): Promise<string | ArrayBuff
 };
 
 function isFileAnImage(file: File): boolean {
-    const imageTypes = ["image/jpeg", "image/png", "image/jpg"];
+    const imageTypes = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
     return imageTypes.includes(file.type);
 }
 
