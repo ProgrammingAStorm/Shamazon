@@ -12,9 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<ShamazonDatabaseSettings>(
     builder.Configuration.GetSection("ShamazonDatabase"));
 
-// builder.Services.Configure<AmazonSettings>(
-//     builder.Configuration.GetSection("AmazonSettings"));
-
 // Model Services
 builder.Services.AddSingleton<ShoppersService>();
 builder.Services.AddSingleton<SellersService>();
