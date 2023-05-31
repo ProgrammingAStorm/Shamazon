@@ -8,9 +8,11 @@ const UPLOAD_MUTATION = gql`
         $name: String!
         $description: String!
         $price: String!
+        $id: String!
+        $images: [String]!
     ) {
         products {
-            upload(name: $name, description: $description, price: $price) {
+            upload(name: $name, description: $description, price: $price, id: $id, images: $images) {
                 token
                 status
                 payload {
@@ -32,6 +34,7 @@ export async function handleUpload(formData: FormData) {
             description: formData.get('description'),
             price: formData.get('price'),
             id: formData.get('id'),
+            images: JSON.parse(formData.get('images')?.toString()!)
         }
     });
 
