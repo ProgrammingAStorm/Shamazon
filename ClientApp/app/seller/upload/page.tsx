@@ -72,7 +72,8 @@ export default function Upload() {
 
         for (let x = 0; x < files!.length; x++) {
             const base64String = await fileToBase64(files?.item(x));
-            fileStrings.push(base64String!.toString());
+            const splitBase64String = base64String?.split(',')[1]
+            fileStrings.push(splitBase64String!);
         }
 
         const formData = new FormData();
@@ -80,7 +81,8 @@ export default function Upload() {
         formData.append('name', name);
         formData.append('price', price);
         formData.append('description', description);
-        formData.append('id', seller.seller?.Id!)
+        formData.append('id', seller.seller?.Id!);
+        formData.append('images', JSON.stringify(fileStrings))
 
         const data = await handleUpload(formData)
         console.log(data)
