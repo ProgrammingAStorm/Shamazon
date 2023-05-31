@@ -1,4 +1,4 @@
-function fileToBase64(file: File | undefined | null): Promise<string | ArrayBuffer | null> {
+function fileToBase64(file: File | undefined | null): Promise<string | null> {
     return new Promise((resolve, reject) => {
         if (!file) resolve(null);
 
@@ -6,7 +6,7 @@ function fileToBase64(file: File | undefined | null): Promise<string | ArrayBuff
 
         reader.readAsDataURL(file!);
 
-        reader.onload = () => resolve(reader.result);
+        reader.onload = () => resolve(reader.result?.toString()!);
         reader.onerror = error => reject(error);
     })
 };
