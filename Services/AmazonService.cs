@@ -10,41 +10,33 @@ namespace Shamazon.Services
 {
     public class AmazonService
     {
-        private readonly string bucketName;
-        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest2;
-        private readonly IAmazonS3 s3Client;
+        private readonly string _bucketName;
+        private readonly string _cloudFrontLink;
+        private readonly IAmazonS3 _amazonS3;
+        private readonly IConfiguration _configuration;
 
-        public AmazonService(IOptions<AmazonSettings> AmazonSettings)
+        public AmazonService(IConfiguration configuration, IAmazonS3 amazonS3)
         {
-            bucketName = AmazonSettings.Value.BucketName;
-            s3Client = new AmazonS3Client(bucketRegion);
+            _configuration = configuration;
+
+            _bucketName = configuration.GetValue<string>("AWS:BucketName")!;
+            _cloudFrontLink = configuration.GetValue<string>("AWS:CloudFrontLink")!;
+
+            _amazonS3 = amazonS3;
         }
 
-        public async Task<string[]> UploadFileAsync(MemoryStream file, string id, string productName)
+        public async Task<string[]> UploadFilesAsync(List<MemoryStream> files, string id, string productName)
         {
-            var fileTransferUtility = new TransferUtility(s3Client);
-
-            string[] fileName = {
-                id + '-' + productName
-            };
-
-            await fileTransferUtility.UploadAsync(file, bucketName, fileName[0]);
-
-            return fileName;
-        }
-
-        public async Task<string[]> UploadFileAsyncBulk(List<MemoryStream> files, string id, string productName)
-        {
-            var fileTransferUtility = new TransferUtility(s3Client);
+            var fileTransferUtility = new TransferUtility(_amazonS3);
 
             string[] fileNames = new string[files.ToArray().Length];
 
             for(int index = 0; index < files.ToArray().Length; index++)
             {
                 var fileName = id + '-' + productName + '-' + index.ToString();
-                fileNames[index] = fileName;
+                fileNames[index] = _cloudFrontLink + fileName;
 
-                await fileTransferUtility.UploadAsync(files[index], bucketName, id + '-' + fileName);
+                await fileTransferUtility.UploadAsync(files.ToArray().ElementAt(index), _bucketName, fileName);
             }
 
             return fileNames;
