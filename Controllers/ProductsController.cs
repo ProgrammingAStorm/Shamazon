@@ -17,37 +17,24 @@ public class ProductsController : GraphController
     }
 
     [Mutation("Upload")]
-    public async Task<IGraphProduct> Upload(string Name, string Description, string Price, string ID)
+    public async Task<IGraphProduct> Upload(string Name, string Description, string Price, string Id, string[] Images)
     {
         // TODO enforce validation so that no products with duplicated names are generated
         // TODO enforce validation so that base64 strings are actually base64 strings
 
-        //var imageStreams = new List<MemoryStream>();
+        var imageStreams = new List<MemoryStream>();
 
-        Console.WriteLine(Price);
+        foreach (var item in Images.ToArray())
+        {
+            imageStreams.Add(Base64ToStream(item));
+        }
 
-        // Console.WriteLine(Images.ToArray().Length);
+        var length = Images.ToArray().Length;
 
-        // foreach (var item in Images.ToArray())
-        // {
-        //     Console.WriteLine(item);
-        //     imageStreams.Add(Base64ToStream(item));
-        // }
+        string[] links = new string[length];
 
-        // var length = Images.ToArray().Length;
+        links = await _amazonService.UploadFilesAsync(imageStreams, Id, Name);
 
-        // string[] links = new string[length];
-
-        // if (length == 1)
-        // {
-        //     links = await _amazonService.UploadFileAsync(imageStreams.ElementAt(0), Id, Name);
-        // }
-        // else
-        // {
-        //     links = await _amazonService.UploadFileAsyncBulk(imageStreams, Id, Name);
-        // }
-
-        // Console.WriteLine(links);
 
         // TODO replice ImageUrls property in newProduct with actual list of Cloud Flare links of the newly added Images
         // TODO use newProduct to generate a new product in the database
@@ -55,8 +42,8 @@ public class ProductsController : GraphController
 
         return new IGraphProduct()
         {
-            Token = Price,
-            Status = int.Parse(Price),
+            Token = Name,
+            Status = 202,
             Payload = null!
         };
     }
@@ -65,9 +52,6 @@ public class ProductsController : GraphController
     {
         byte[] bytes = Convert.FromBase64String(base64String);
 
-        using (MemoryStream memoryStream = new MemoryStream(bytes))
-        {
-            return memoryStream;
-        }
+        return new MemoryStream(bytes);
     }
 }
