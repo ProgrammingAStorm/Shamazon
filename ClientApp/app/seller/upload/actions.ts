@@ -2,6 +2,16 @@
 
 import { gql } from "@apollo/client";
 import client from "@/src/apollo";
+import { uploadFile } from "@/src/aws";
+import { base64StringToBuffer } from "@/src/file";
+
+interface IUploadParams {
+    id: string,
+    name: string,
+    price: string,
+    description: string,
+    fileStrings: string[]
+}
 
 const UPLOAD_MUTATION = gql`
     mutation upload(
@@ -9,10 +19,10 @@ const UPLOAD_MUTATION = gql`
         $description: String!
         $price: String!
         $id: String!
-        $images: [String]!
+        $links: [String]!
     ) {
         products {
-            upload(name: $name, description: $description, price: $price, id: $id, images: $images) {
+            upload(name: $name, description: $description, price: $price, id: $id, links: $links) {
                 token
                 status
                 payload {
@@ -23,18 +33,26 @@ const UPLOAD_MUTATION = gql`
     }
 `;
 
-export async function handleUpload(formData: FormData) {
-    
-    // refactor to include base64 extraction of images on this end instead of the client
+export async function handleUpload({ id, name, price, description, fileStrings }: IUploadParams) {
+    const fileLinks: string[] = []
+
+    fileStrings.forEach(async (value, index) => {
+        const fileBuffer = base64StringToBuffer(value)
+        const fileName = `${id}-${name}-${index}`;
+
+        fileLinks.push(process.env.AWS_CDN_NAME! + fileName);
+
+        await uploadFile(fileBuffer, fileName);
+    })
 
     const mutation = await client.mutate({
         mutation: UPLOAD_MUTATION,
         variables: {
-            name: formData.get('name'),
-            description: formData.get('description'),
-            price: formData.get('price'),
-            id: formData.get('id'),
-            images: JSON.parse(formData.get('images')?.toString()!)
+            name,
+            description,
+            price,
+            id,
+            links: fileLinks
         }
     });
 
