@@ -21,31 +21,7 @@ public class ProductsController : GraphController
     [Mutation("Upload")]
     public async Task<IGraphProduct> Upload(string Name, string Description, string Price, string Id, string[] Links)
     {
-        // TODO enforce validation so that no products with duplicated names are generated
-        // TODO enforce validation so that base64 strings are actually base64 strings
-
-        foreach (var item in Links)
-        {
-            Console.WriteLine(item);
-        }
-
-        // var imageStreams = new List<MemoryStream>();
-
-        // foreach (var item in Images.ToArray())
-        // {
-        //     imageStreams.Add(Base64ToStream(item));
-        // }
-
-        // var length = Images.ToArray().Length;
-
-        // string[] links = new string[length];
-
-        // links = await _amazonService.UploadFilesAsync(imageStreams, Id, Name);
-
-
-        // TODO replice ImageUrls property in newProduct with actual list of Cloud Flare links of the newly added Images
-        // TODO use newProduct to generate a new product in the database
-        // TODO return the newly created product 
+        var newProduct = new Product(Name, Description, Links, float.Parse(Price), Id);
 
         return new IGraphProduct()
         {
@@ -58,9 +34,9 @@ public class ProductsController : GraphController
     [Query("CheckName")]
     public async Task<IGraphProduct> CheckName(string Name)
     {
-        var product = _productsService.CheckNameAsync(Name);
+        var product = await _productsService.CheckNameAsync(Name);
 
-        if(Name == null)
+        if(product == null)
         {
             return new IGraphProduct()
             {
