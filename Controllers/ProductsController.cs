@@ -58,9 +58,21 @@ public class ProductsController : GraphController
     [Mutation("CheckName")]
     public async Task<IGraphProduct> CheckName(string Name)
     {
+        var product = _productsService.CheckNameAsync(Name);
+
+        if(Name == null)
+        {
+            return new IGraphProduct()
+            {
+                Token = null!,
+                Status = 409,
+                Payload = null!
+            };
+        }
+
         return new IGraphProduct()
         {
-            Token = Name,
+            Token = "Product name is already in use",
             Status = 202,
             Payload = null!
         };
