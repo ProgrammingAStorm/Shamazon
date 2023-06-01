@@ -16,7 +16,14 @@ function isFileAnImage(file: File): boolean {
     return imageTypes.includes(file.type);
 }
 
+function base64StringToBuffer(fileString: string) {
+    const buffer = Buffer.from(fileString, 'base64')
+
+    return buffer;
+}
+
 export {
     fileToBase64,
-    isFileAnImage
+    isFileAnImage,
+    base64StringToBuffer
 }
