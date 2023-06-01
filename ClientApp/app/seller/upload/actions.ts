@@ -33,8 +33,33 @@ const UPLOAD_MUTATION = gql`
     }
 `;
 
+const CHECK_NAME_QUERY = gql`
+    query checkName(
+        $name: String!
+    ) {
+        products {
+            checkName(name: $name) {
+                token
+                status
+                payload {
+                    __typename
+                }
+            }
+        }
+    }
+`;
+
 export async function handleUpload({ id, name, price, description, fileStrings }: IUploadParams) {
     const fileLinks: string[] = []
+
+    const query = await client.query({
+        query: CHECK_NAME_QUERY,
+        variables: {
+            name
+        }
+    })
+
+    if(query.data.products.checkName.status === 202) return query.data.products.checkName;
 
     fileStrings.forEach(async (value, index) => {
         const fileBuffer = base64StringToBuffer(value)
