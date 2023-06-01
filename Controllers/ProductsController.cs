@@ -10,10 +10,12 @@ namespace Shamazon.Controllers;
 public class ProductsController : GraphController
 {
     private readonly AmazonService _amazonService;
+    private readonly ProductsService _productsService;
 
-    public ProductsController(AmazonService amazonService)
+    public ProductsController(AmazonService amazonService, ProductsService productsService)
     {
         _amazonService = amazonService;
+        _productsService = productsService;
     }
 
     [Mutation("Upload")]
