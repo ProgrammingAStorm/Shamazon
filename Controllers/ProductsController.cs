@@ -55,7 +55,7 @@ public class ProductsController : GraphController
         };
     }
 
-    [Mutation("CheckName")]
+    [Query("CheckName")]
     public async Task<IGraphProduct> CheckName(string Name)
     {
         var product = _productsService.CheckNameAsync(Name);
