@@ -11,11 +11,13 @@ public class ProductsController : GraphController
 {
     private readonly AmazonService _amazonService;
     private readonly ProductsService _productsService;
+    private readonly TokenService _tokenService;
 
-    public ProductsController(AmazonService amazonService, ProductsService productsService)
+    public ProductsController(AmazonService amazonService, ProductsService productsService, TokenService tokenService)
     {
         _amazonService = amazonService;
         _productsService = productsService;
+        _tokenService = tokenService;
     }
 
     [Mutation("Upload")]
