@@ -1,7 +1,7 @@
 'use client'
 
 import { sellerSelector } from "@/src/redux/slices/sellerSlice";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useSelector } from "react-redux";
 import { fileToBase64, isFileAnImage } from "../../../src/file";
 import { handleUpload } from "./actions";
@@ -62,33 +62,33 @@ export default function Upload() {
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
 
-        if(files!.length > 4) {
+        if (files!.length > 4) {
             setMessage("Maximum of 4 pictures may be uploaded at a time.");
             clearFileInput();
             return;
         }
 
-        const fileStrings: string[] = []
+        const fileStrings: string[] = [];
 
-        for (let x = 0; x < files!.length; x++) {
-            const base64String = await fileToBase64(files?.item(x));
-            const splitBase64String = base64String?.split(',')[1]
-            fileStrings.push(splitBase64String!);
+        for (let index = 0; index < files?.length!; index++) {
+            const fileString = await fileToBase64(files?.item(index)!);
+
+            const base64String = fileString?.split(',')[1];
+
+            fileStrings.push(base64String!);
         }
 
-        const formData = new FormData();
-        
-        formData.append('name', name);
-        formData.append('price', price);
-        formData.append('description', description);
-        formData.append('id', seller.seller?.Id!);
-        formData.append('images', JSON.stringify(fileStrings))
-
-        const data = await handleUpload(formData)
+        const data = await handleUpload({
+            id: seller.seller?.Id!,
+            name,
+            price,
+            description,
+            fileStrings
+        });
         console.log(data)
 
         // try {
-            
+
         // } catch (error) {
         //     clearFileInput()
         //     setMessage("Images are too large. Please try less or smaller images.")
@@ -96,8 +96,8 @@ export default function Upload() {
         // }
 
         // TODO handle different response codes
-        
-        
+
+
         clearForm();
     }
 
@@ -105,7 +105,7 @@ export default function Upload() {
         for (let index = 0; index < newFiles.length; index++) {
             const file = newFiles[index];
 
-            if(!isFileAnImage(file)) {
+            if (!isFileAnImage(file)) {
                 setMessage("Please only upload images.");
                 clearFileInput();
             }
