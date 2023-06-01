@@ -54,11 +54,4 @@ public class ProductsController : GraphController
             Payload = null!
         };
     }
-
-    MemoryStream Base64ToStream(string base64String)
-    {
-        byte[] bytes = Convert.FromBase64String(base64String);
-
-        return new MemoryStream(bytes);
-    }
 }
