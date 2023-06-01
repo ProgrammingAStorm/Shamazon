@@ -15,6 +15,7 @@ builder.Services.Configure<ShamazonDatabaseSettings>(
 // Model Services
 builder.Services.AddSingleton<ShoppersService>();
 builder.Services.AddSingleton<SellersService>();
+builder.Services.AddSingleton<ProductsService>();
 
 // Util Services
 builder.Services.AddSingleton<TokenService>();
