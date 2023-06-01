@@ -22,6 +22,15 @@ namespace Shamazon.Models
         public string[]? Tags { get; set; }
 
         public Review[]? Reviews { get; set; }
+
+        public Product(string name, string description, string[] imageUrls, float price, string productSeller)
+        {
+            Name = name;
+            Description = description;
+            ImageUrls = imageUrls;
+            Price = price;
+            ProductSeller = productSeller;
+        }
     }
 
     public class IGraphProduct: IGraphResponse
