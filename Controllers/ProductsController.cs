@@ -54,4 +54,15 @@ public class ProductsController : GraphController
             Payload = null!
         };
     }
+
+    [Mutation("CheckName")]
+    public async Task<IGraphProduct> CheckName(string Name)
+    {
+        return new IGraphProduct()
+        {
+            Token = Name,
+            Status = 202,
+            Payload = null!
+        };
+    }
 }
