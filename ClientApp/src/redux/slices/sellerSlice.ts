@@ -31,7 +31,8 @@ export const sellerSlice = createSlice({
             state.seller = seller;
             state.token = token;
 
-            localStorage.setItem('sellerToken', JSON.stringify(token));
+            localStorage.removeItem('sellerToken')
+            localStorage.setItem('sellerToken', token!);
         },
         sellerLogOut: state => {
             state.seller = null;
