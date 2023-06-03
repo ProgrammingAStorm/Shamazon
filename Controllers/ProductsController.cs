@@ -25,11 +25,15 @@ public class ProductsController : GraphController
     {
         var newProduct = new Product(Name, Description, Links, float.Parse(Price), Id);
 
+        await _productsService.CreateAsync(newProduct);
+
+        var product = await _productsService.GetByNameAndSellerAsync(Name, Id);
+
         return new IGraphProduct()
         {
-            Token = Name,
+            Token = null!,
             Status = 202,
-            Payload = null!
+            Payload = product
         };
     }
 
