@@ -28,5 +28,8 @@ namespace Shamazon.Services
 
         public async Task<Product?> CheckNameAsync(string name) =>
             await _productsCollection.Find(x => x.Name == name).FirstOrDefaultAsync();
+
+        public async Task<Product> GetByNameAndSellerAsync(string name, string sellerId) =>
+            await _productsCollection.Find(x => x.Name == name && x.ProductSeller == sellerId).FirstOrDefaultAsync();
     }
 }
