@@ -35,7 +35,8 @@ export const shopperSlice = createSlice({
             state.shopper = shopper;
             state.token = token;
 
-            localStorage.setItem('shopperToken', JSON.stringify(token));
+            localStorage.removeItem('shopperToken')
+            localStorage.setItem('shopperToken', token!);
         },
         logOut: state => {
             state.shopper = null;
