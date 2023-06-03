@@ -1,7 +1,10 @@
 'use client'
 
-import { FormEvent, useRef, useState } from "react";
+import { sellerSelector } from "@/src/redux/slices/sellerSlice";
+import { FormEvent, useState } from "react";
+import { useSelector } from "react-redux";
 import { fileToBase64, isFileAnImage } from "../../../src/file";
+import { handleUpload } from "./actions";
 
 export default function Upload() {
     const [name, setName] = useState('');
@@ -9,6 +12,8 @@ export default function Upload() {
     const [price, setPrice] = useState('');
     const [files, setFiles] = useState<FileList>();
     const [message, setMessage] = useState('');
+
+    const seller = useSelector(sellerSelector);
 
     return <main>
         <form onSubmit={handleSubmit}>
@@ -57,39 +62,41 @@ export default function Upload() {
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
 
-        if(files!.length > 4) {
+        if (files!.length > 4) {
             setMessage("Maximum of 4 pictures may be uploaded at a time.");
             clearFileInput();
             return;
         }
 
-        const fileStrings: string[] = []
+        const fileStrings: string[] = [];
 
-        for (let x = 0; x < files!.length; x++) {
-            const base64String = await fileToBase64(files?.item(x));
-            console.log(base64String!)
-            fileStrings.push(base64String!.toString());
+        for (let index = 0; index < files?.length!; index++) {
+            const fileString = await fileToBase64(files?.item(index)!);
+
+            const base64String = fileString?.split(',')[1];
+
+            fileStrings.push(base64String!);
         }
 
-        // const request = await fetch("/api/products/upload", {
-        //     method: "POST",
-        //     headers: {
-        //         "content-type": "application/json; charset=utf-8"
-        //     },
-        //     body: JSON.stringify({
-        //         Name: name,
-        //         Description: description,
-        //         Price: price,
-        //         ImageUrls: fileStrings,
-        //         // TODO needs to get name of product seller from token
-        //         ProductSeller: "name"
-        //     })
-        // });
-        // const response = await request.json();
+        const data = await handleUpload({
+            id: seller.seller?.Id!,
+            name,
+            price,
+            description,
+            fileStrings
+        });
+        console.log(data)
+
+        // try {
+
+        // } catch (error) {
+        //     clearFileInput()
+        //     setMessage("Images are too large. Please try less or smaller images.")
+        //     return;
+        // }
 
         // TODO handle different response codes
-        
-        // console.log(response)
+
 
         clearForm();
     }
@@ -98,7 +105,7 @@ export default function Upload() {
         for (let index = 0; index < newFiles.length; index++) {
             const file = newFiles[index];
 
-            if(!isFileAnImage(file)) {
+            if (!isFileAnImage(file)) {
                 setMessage("Please only upload images.");
                 clearFileInput();
             }

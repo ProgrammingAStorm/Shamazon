@@ -1,6 +1,8 @@
 using Shamazon.Models;
 using Shamazon.Services;
 
+using Amazon.S3;
+
 using GraphQL.AspNet.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,12 +15,18 @@ builder.Services.Configure<ShamazonDatabaseSettings>(
 // Model Services
 builder.Services.AddSingleton<ShoppersService>();
 builder.Services.AddSingleton<SellersService>();
+builder.Services.AddSingleton<ProductsService>();
 
 // Util Services
 builder.Services.AddSingleton<TokenService>();
+builder.Services.AddSingleton<AmazonService>();
 
 // Add graphql services to the DI container
 builder.Services.AddGraphQL();
+
+// AWS Services
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
 
 var app = builder.Build();
 

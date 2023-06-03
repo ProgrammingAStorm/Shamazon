@@ -6,6 +6,3 @@ const client = new ApolloClient({
 });
 
 export default client;
-
-//https://localhost:7088
-//http://localhost:5164
